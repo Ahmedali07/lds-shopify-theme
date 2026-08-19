@@ -1,0 +1,13 @@
+# Local tooling — do not upload to the theme
+.shopify/*
+.git/*
+.gitignore
+.vscode/*
+.idea/*
+.theme-check.yml
+shopify.theme.toml
+node_modules/*
+*.md
+.env
+.env.*
+*.zip

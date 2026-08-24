@@ -538,6 +538,10 @@
                             <ul class="menu-drawer__featured-content-list list-unstyled">
                               {% if featured_collections.size > 0 %}
                                 {%- for collection in featured_collections limit: max_featured_items -%}
+                                  {% capture catalog_hidden %}
+                                    {% render 'collection-is-catalog-hidden', collection: collection.object %}
+                                  {% endcapture %}
+                                  {% unless catalog_hidden contains 'true' %}
                                   <li class="menu-drawer__featured-content-list-item menu-drawer__featured-content-list-item--collection">
                                     {% render 'resource-card',
                                       resource: collection.object,
@@ -547,10 +551,24 @@
                                       image_sizes: 'auto, 400px'
                                     %}
                                   </li>
+                                  {% endunless %}
                                 {%- endfor -%}
                               {% else %}
                                 {% paginate featured_products_collection.products by max_featured_items %}
+                                  {% capture dedicated_collection %}
+                                    {% render 'restricted-collection-context', handle: featured_products_collection.handle %}
+                                  {% endcapture %}
                                   {%- for product in featured_products_collection.products limit: max_featured_items -%}
+                                    {% assign show_product = true %}
+                                    {% unless dedicated_collection contains 'true' %}
+                                      {% capture catalog_hidden %}
+                                        {% render 'product-is-catalog-hidden', product: product %}
+                                      {% endcapture %}
+                                      {% if catalog_hidden contains 'true' %}
+                                        {% assign show_product = false %}
+                                      {% endif %}
+                                    {% endunless %}
+                                    {% if show_product %}
                                     <li class="menu-drawer__featured-content-list-item menu-drawer__featured-content-list-item--product">
                                       {% render 'resource-card',
                                         resource: product,
@@ -560,6 +578,7 @@
                                         product_view_context: 'dialog'
                                       %}
                                     </li>
+                                    {% endif %}
                                   {%- endfor -%}
                                 {% endpaginate %}
                               {% endif %}
@@ -748,6 +767,10 @@
           <ul class="menu-drawer__featured-content-list menu-drawer__animated-element list-unstyled">
             {% if top_level_featured_collections.size > 0 %}
               {%- for collection in top_level_featured_collections limit: max_featured_items -%}
+                {% capture catalog_hidden %}
+                  {% render 'collection-is-catalog-hidden', collection: collection.object %}
+                {% endcapture %}
+                {% unless catalog_hidden contains 'true' %}
                 <li class="menu-drawer__featured-content-list-item menu-drawer__featured-content-list-item--collection">
                   {% render 'resource-card',
                     resource: collection.object,
@@ -757,10 +780,24 @@
                     image_sizes: 'auto, 400px'
                   %}
                 </li>
+                {% endunless %}
               {%- endfor -%}
             {% elsif top_level_featured_products_collection.products_count > 0 %}
               {% paginate top_level_featured_products_collection.products by max_featured_items %}
+                {% capture dedicated_collection %}
+                  {% render 'restricted-collection-context', handle: top_level_featured_products_collection.handle %}
+                {% endcapture %}
                 {%- for product in top_level_featured_products_collection.products limit: max_featured_items -%}
+                  {% assign show_product = true %}
+                  {% unless dedicated_collection contains 'true' %}
+                    {% capture catalog_hidden %}
+                      {% render 'product-is-catalog-hidden', product: product %}
+                    {% endcapture %}
+                    {% if catalog_hidden contains 'true' %}
+                      {% assign show_product = false %}
+                    {% endif %}
+                  {% endunless %}
+                  {% if show_product %}
                   <li class="menu-drawer__featured-content-list-item menu-drawer__featured-content-list-item--product">
                     {% render 'resource-card',
                       resource: product,
@@ -770,6 +807,7 @@
                       product_view_context: 'dialog'
                     %}
                   </li>
+                  {% endif %}
                 {%- endfor -%}
               {% endpaginate %}
             {% endif %}

@@ -4,12 +4,14 @@
 ._*
 Thumbs.db
 ehthumbs.db
+.vscode/
 
 # Dependencies
 node_modules/
 
 # Shopify CLI local state
 .shopify/
+shopify.theme.toml
 
 # Editor
 .idea/

@@ -49,6 +49,10 @@
           {% for _id in order_ids %}
             {% assign int_id = _id | times: 1 %}
             {% assign product = products | find: 'id', int_id %}
+            {% capture catalog_hidden %}
+              {% render 'product-is-catalog-hidden', product: product %}
+            {% endcapture %}
+            {% unless catalog_hidden contains 'true' %}
             <li
               class="predictive-search-results__card predictive-search-results__card--product"
               ref="recentlyViewedItems[]"
@@ -62,9 +66,14 @@
                 product_view_context: 'search'
               %}
             </li>
+            {% endunless %}
           {% endfor %}
         {% else %}
           {% for product in products limit: limit %}
+            {% capture catalog_hidden %}
+              {% render 'product-is-catalog-hidden', product: product %}
+            {% endcapture %}
+            {% unless catalog_hidden contains 'true' %}
             <li
               class="predictive-search-results__card predictive-search-results__card--product"
               ref="recentlyViewedItems[]"
@@ -78,6 +87,7 @@
                 product_view_context: 'search'
               %}
             </li>
+            {% endunless %}
           {% endfor %}
         {% endif %}
       </ul>
@@ -93,6 +103,10 @@
         assign limit = limit | default: 8
       %}
       {% for product in products limit: limit %}
+        {% capture catalog_hidden %}
+          {% render 'product-is-catalog-hidden', product: product %}
+        {% endcapture %}
+        {% unless catalog_hidden contains 'true' %}
         <li
           class="predictive-search-results__card predictive-search-results__card--product"
           ref="resultsItems[]"
@@ -106,6 +120,7 @@
             product_view_context: 'search'
           %}
         </li>
+        {% endunless %}
       {% endfor %}
     </ul>
   {% endif %}

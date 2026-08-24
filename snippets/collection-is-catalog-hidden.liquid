@@ -1,0 +1,15 @@
+{%- doc -%}
+  Outputs `true` when a collection should not appear on Catalogue / Shop all listings.
+  Dedicated Wholesale and Used Products pages still show these collections.
+
+  @param {object} collection - collection to test
+{%- enddoc -%}
+{%- assign handle = collection.handle | default: '' -%}
+{%- if handle == 'wholesale'
+  or handle == 'used-products'
+  or handle == 'used-like-new'
+  or handle == 'frontpage'
+  or handle == 'homepage'
+-%}
+  true
+{%- endif -%}

@@ -54,10 +54,13 @@
 
   {% capture list_items %}
     {% for collection in section_collections limit: max_items %}
-      <div class="resource-list__item">
-        {% content_for 'block', type: '_collection-card', id: 'static-collection-card', closest.collection: collection %}
-      </div>
-      {% unless forloop.last %}
+      {% capture catalog_hidden %}
+        {% render 'collection-is-catalog-hidden', collection: collection %}
+      {% endcapture %}
+      {% unless catalog_hidden contains 'true' %}
+        <div class="resource-list__item">
+          {% content_for 'block', type: '_collection-card', id: 'static-collection-card', closest.collection: collection %}
+        </div>
         <!--@list/split-->
       {% endunless %}
     {% endfor %}

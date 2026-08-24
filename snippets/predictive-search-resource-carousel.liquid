@@ -9,10 +9,21 @@
 {% liquid
   capture slides
     for resource in resources
-      capture children
-        render 'resource-card', resource_type: resource_type, resource: resource, image_aspect_ratio: '4 / 5', collection_thumbnails: 'multiple', product_view_context: 'search'
-      endcapture
-      render 'slideshow-slide', index: forloop.index0, children: children, class: 'predictive-search-results__card'
+      assign skip_resource = false
+      if resource_type == 'collection'
+        capture catalog_hidden
+          render 'collection-is-catalog-hidden', collection: resource
+        endcapture
+        if catalog_hidden contains 'true'
+          assign skip_resource = true
+        endif
+      endif
+      unless skip_resource
+        capture children
+          render 'resource-card', resource_type: resource_type, resource: resource, image_aspect_ratio: '4 / 5', collection_thumbnails: 'multiple', product_view_context: 'search'
+        endcapture
+        render 'slideshow-slide', index: forloop.index0, children: children, class: 'predictive-search-results__card'
+      endunless
     endfor
   endcapture
 %}

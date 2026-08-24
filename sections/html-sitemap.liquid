@@ -1,0 +1,233 @@
+{% liquid
+  if section.settings.background_color != blank
+    render 'contrast-override', background_color: section.settings.background_color, section_id: section.id
+  endif
+%}
+
+<div
+  class="section-background{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}"
+></div>
+<div
+  class="section section--{{ section.settings.section_width }}{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %} spacing-style"
+  style="{% render 'spacing-style', settings: section.settings %}"
+>
+  <div class="html-sitemap">
+    {% if section.settings.heading != blank %}
+      <h1 class="html-sitemap__title {{ section.settings.heading_preset }}">{{ section.settings.heading }}</h1>
+    {% endif %}
+
+    {% if section.settings.show_pages %}
+      <nav class="html-sitemap__group" aria-labelledby="SitemapPages-{{ section.id }}">
+        <h2 id="SitemapPages-{{ section.id }}" class="html-sitemap__heading h4">Pages</h2>
+        <ul class="html-sitemap__list list-unstyled">
+          <li>
+            <a href="{{ routes.root_url }}">{{ shop.name }}</a>
+          </li>
+          {% for page in pages %}
+            <li>
+              <a href="{{ page.url }}">{{ page.title }}</a>
+            </li>
+          {% endfor %}
+        </ul>
+      </nav>
+    {% endif %}
+
+    {% if section.settings.show_collections %}
+      <nav class="html-sitemap__group" aria-labelledby="SitemapCollections-{{ section.id }}">
+        <h2 id="SitemapCollections-{{ section.id }}" class="html-sitemap__heading h4">Collections</h2>
+        <ul class="html-sitemap__list list-unstyled">
+          {% for collection in collections %}
+            {% capture catalog_hidden %}
+              {% render 'collection-is-catalog-hidden', collection: collection %}
+            {% endcapture %}
+            {% unless catalog_hidden contains 'true' %}
+              <li>
+                <a href="{{ collection.url }}">{{ collection.title }}</a>
+              </li>
+            {% endunless %}
+          {% endfor %}
+        </ul>
+      </nav>
+    {% endif %}
+
+    {% if section.settings.show_blogs %}
+      {% for blog in blogs %}
+        <nav class="html-sitemap__group" aria-labelledby="SitemapBlog-{{ blog.id }}-{{ section.id }}">
+          <h2 id="SitemapBlog-{{ blog.id }}-{{ section.id }}" class="html-sitemap__heading h4">{{ blog.title }}</h2>
+          <ul class="html-sitemap__list list-unstyled">
+            <li>
+              <a href="{{ blog.url }}">{{ blog.title }}</a>
+            </li>
+            {% for article in blog.articles %}
+              <li>
+                <a href="{{ article.url }}">{{ article.title }}</a>
+              </li>
+            {% endfor %}
+          </ul>
+        </nav>
+      {% endfor %}
+    {% endif %}
+
+    {% if section.settings.show_policies %}
+      <nav class="html-sitemap__group" aria-labelledby="SitemapPolicies-{{ section.id }}">
+        <h2 id="SitemapPolicies-{{ section.id }}" class="html-sitemap__heading h4">Policies</h2>
+        <ul class="html-sitemap__list list-unstyled">
+          {% if shop.privacy_policy %}
+            <li>
+              <a href="{{ shop.privacy_policy.url }}">{{ shop.privacy_policy.title }}</a>
+            </li>
+          {% endif %}
+          {% if shop.refund_policy %}
+            <li>
+              <a href="{{ shop.refund_policy.url }}">{{ shop.refund_policy.title }}</a>
+            </li>
+          {% endif %}
+          {% if shop.shipping_policy %}
+            <li>
+              <a href="{{ shop.shipping_policy.url }}">{{ shop.shipping_policy.title }}</a>
+            </li>
+          {% endif %}
+          {% if shop.terms_of_service %}
+            <li>
+              <a href="{{ shop.terms_of_service.url }}">{{ shop.terms_of_service.title }}</a>
+            </li>
+          {% endif %}
+          {% if shop.contact_information %}
+            <li>
+              <a href="{{ shop.contact_information.url }}">{{ shop.contact_information.title }}</a>
+            </li>
+          {% endif %}
+        </ul>
+      </nav>
+    {% endif %}
+  </div>
+</div>
+
+{% stylesheet %}
+  .html-sitemap {
+    display: grid;
+    gap: var(--padding-3xl);
+  }
+
+  .html-sitemap__title {
+    margin: 0;
+  }
+
+  .html-sitemap__heading {
+    margin: 0 0 var(--padding-md);
+  }
+
+  .html-sitemap__list {
+    display: grid;
+    gap: var(--padding-xs);
+  }
+
+  .html-sitemap__list a {
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+  }
+
+  @media screen and (min-width: 750px) {
+    .html-sitemap {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      column-gap: var(--padding-3xl);
+    }
+
+    .html-sitemap__title {
+      grid-column: 1 / -1;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "HTML sitemap",
+  "tag": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "t:settings.heading",
+      "default": "Sitemap"
+    },
+    {
+      "type": "select",
+      "id": "heading_preset",
+      "label": "t:settings.heading_preset",
+      "options": [
+        { "value": "h1", "label": "t:options.h1" },
+        { "value": "h2", "label": "t:options.h2" },
+        { "value": "h3", "label": "t:options.h3" }
+      ],
+      "default": "h1"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_pages",
+      "label": "Show pages",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_collections",
+      "label": "Show collections",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_blogs",
+      "label": "Show blogs",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_policies",
+      "label": "Show policies",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "section_width",
+      "label": "t:settings.width",
+      "options": [
+        { "value": "page-width", "label": "t:options.page" },
+        { "value": "full-width", "label": "t:options.full" }
+      ],
+      "default": "page-width"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "t:settings.background_color"
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "default": 48
+    }
+  ],
+  "presets": [
+    {
+      "name": "HTML sitemap"
+    }
+  ]
+}
+{% endschema %}

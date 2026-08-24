@@ -1,0 +1,16 @@
+{%- doc -%}
+  Outputs `true` when a product belongs to Wholesale or Used Products
+  and should be hidden from Catalogue / Shop all / search.
+
+  @param {object} product - product to test
+{%- enddoc -%}
+{%- assign hidden = false -%}
+{%- if product != blank -%}
+  {%- for c in product.collections -%}
+    {%- if c.handle == 'wholesale' or c.handle == 'used-products' or c.handle == 'used-like-new' -%}
+      {%- assign hidden = true -%}
+      {%- break -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endif -%}
+{%- if hidden -%}true{%- endif -%}

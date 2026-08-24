@@ -61,22 +61,36 @@
       {% endif %}
 
       {% paginate collection.products by products_per_page %}
+        {% capture dedicated_collection %}
+          {% render 'restricted-collection-context', handle: collection.handle %}
+        {% endcapture %}
         {% capture children %}
           {% for product in collection.products %}
-            <li
-              id="{{ section.id }}-{{ product.id }}"
-              class="product-grid__item product-grid__item--{{ forloop.index0 }}"
-              data-page="{{ paginate.current_page }}"
-              data-product-id="{{ product.id }}"
-              ref="cards[]"
-            >
-              {% content_for 'block',
-                type: '_product-card',
-                id: 'product-card',
-                closest.product: product,
-                product_view_context: 'collection'
-              %}
-            </li>
+            {% assign show_product = true %}
+            {% unless dedicated_collection contains 'true' %}
+              {% capture catalog_hidden %}
+                {% render 'product-is-catalog-hidden', product: product %}
+              {% endcapture %}
+              {% if catalog_hidden contains 'true' %}
+                {% assign show_product = false %}
+              {% endif %}
+            {% endunless %}
+            {% if show_product %}
+              <li
+                id="{{ section.id }}-{{ product.id }}"
+                class="product-grid__item product-grid__item--{{ forloop.index0 }}"
+                data-page="{{ paginate.current_page }}"
+                data-product-id="{{ product.id }}"
+                ref="cards[]"
+              >
+                {% content_for 'block',
+                  type: '_product-card',
+                  id: 'product-card',
+                  closest.product: product,
+                  product_view_context: 'collection'
+                %}
+              </li>
+            {% endif %}
           {% endfor %}
         {% endcapture %}
 

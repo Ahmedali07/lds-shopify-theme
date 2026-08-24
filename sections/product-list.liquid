@@ -32,21 +32,32 @@
   {% capture list_items %}
     {% if section.settings.collection != blank and shop.products_count != 0 %}
       {% paginate section.settings.collection.products by max_items %}
+        {% capture dedicated_collection %}
+          {% render 'restricted-collection-context', handle: section.settings.collection.handle %}
+        {% endcapture %}
         {% for product in section.settings.collection.products limit: max_items %}
-        <div
-          class="resource-list__item"
-        >
-            {% content_for 'block',
-              type: '_product-card',
-              id: 'static-product-card',
-              closest.product: product,
-              product_view_context: 'collection'
-            %}
-          </div>
-
-          {% unless forloop.last %}
-            <!--@list/split-->
+          {% assign show_product = true %}
+          {% unless dedicated_collection contains 'true' %}
+            {% capture catalog_hidden %}
+              {% render 'product-is-catalog-hidden', product: product %}
+            {% endcapture %}
+            {% if catalog_hidden contains 'true' %}
+              {% assign show_product = false %}
+            {% endif %}
           {% endunless %}
+          {% if show_product %}
+            <div
+              class="resource-list__item"
+            >
+              {% content_for 'block',
+                type: '_product-card',
+                id: 'static-product-card',
+                closest.product: product,
+                product_view_context: 'collection'
+              %}
+            </div>
+            <!--@list/split-->
+          {% endif %}
         {% endfor %}
       {% endpaginate %}
     {% else %}
@@ -108,7 +119,8 @@
     {
       "type": "collection",
       "id": "collection",
-      "label": "t:settings.collection"
+      "label": "t:settings.collection",
+      "info": "Only products added to this collection in Admin → Products are shown. Use Homepage, Catalogue, Wholesale, or a nav category collection."
     },
     {
       "type": "select",

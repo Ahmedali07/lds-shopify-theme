@@ -1,0 +1,10 @@
+{%- doc -%}
+  Outputs `true` when the current collection is Wholesale or Used Products,
+  so its products should remain visible on that collection or dedicated page.
+
+  @param {string} handle - collection handle
+{%- enddoc -%}
+{%- assign handle = handle | default: '' -%}
+{%- if handle == 'wholesale' or handle == 'used-products' or handle == 'used-like-new' -%}
+  true
+{%- endif -%}

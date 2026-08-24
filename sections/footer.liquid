@@ -39,6 +39,7 @@
     class="
       footer-content
       spacing-style
+      {% if total_blocks == 4 %}footer-content--four-col{% endif %}
       {% if has_isolated_grid_item_desktop %}footer-content--isolated-grid-item-desktop{% endif %}
       {% if has_isolated_grid_item_tablet %}footer-content--isolated-grid-item-tablet{% endif %}
     "
@@ -56,8 +57,6 @@
 
 {% stylesheet %}
   .footer-content {
-    contain: content;
-    content-visibility: auto;
     display: grid;
     grid-template-columns: 1fr;
     gap: var(--footer-gap);
@@ -66,6 +65,127 @@
 
   .footer-content .menu__heading__default {
     font-weight: var(--font-heading--weight);
+  }
+
+  .footer-content > * {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .footer-content .social-icons__wrapper {
+    justify-content: flex-start;
+  }
+
+  .footer-content .email-signup-block,
+  .footer-content .email-signup__form,
+  .footer-content .email-signup__input-group {
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+  }
+
+  .footer-content > .group-block:first-of-type,
+  .footer-content > .group-block:first-of-type .group-block-content {
+    align-items: flex-start;
+  }
+
+  .footer-content .logo-block {
+    width: 7rem;
+    max-width: 100%;
+    height: 3.6rem;
+    max-height: 3.6rem;
+    justify-content: flex-start;
+    align-self: flex-start;
+    margin-inline: 0;
+    overflow: hidden;
+    background: transparent;
+  }
+
+  .footer-content .logo-block__image-wrapper {
+    width: 100%;
+    height: 100%;
+    justify-content: flex-start;
+    background: transparent;
+  }
+
+  .footer-content .logo-block__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    background: transparent;
+    /* The stored logo is a white rectangle; invert knocks the white to black on this footer. */
+    filter: invert(1) hue-rotate(180deg);
+    mix-blend-mode: screen;
+  }
+
+  .footer-content > .group-block:first-of-type .text-block {
+    width: 100%;
+    max-width: 22em;
+    align-self: flex-start;
+    align-items: flex-start;
+  }
+
+  .footer-content > .group-block:first-of-type .text-block > * {
+    width: 100%;
+    max-inline-size: 100%;
+    text-align: left;
+  }
+
+  .footer-content .menu__item a {
+    display: inline-block;
+    position: relative;
+    color: inherit;
+    text-decoration: none;
+    transition: opacity 0.2s ease;
+  }
+
+  .footer-content .menu__item a::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 1px;
+    background-color: currentColor;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.25s ease;
+  }
+
+  .footer-content .menu__item a:hover,
+  .footer-content .menu__item a:focus-visible {
+    opacity: 0.8;
+  }
+
+  .footer-content .menu__item a:hover::after,
+  .footer-content .menu__item a:focus-visible::after {
+    transform: scaleX(1);
+  }
+
+  .footer-content .social-icons__icon-wrapper a {
+    display: flex;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+  }
+
+  .footer-content .social-icons__icon-wrapper a:hover,
+  .footer-content .social-icons__icon-wrapper a:focus-visible {
+    transform: translateY(-2px);
+    opacity: 0.75;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .footer-content .menu__item a,
+    .footer-content .menu__item a::after,
+    .footer-content .social-icons__icon-wrapper a {
+      transition: none;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .footer-content {
+      gap: calc(var(--footer-gap) * 0.75);
+    }
   }
 
   @media screen and (min-width: 750px) and (max-width: 989px) {
@@ -78,6 +198,19 @@
       grid-template-columns: repeat(2, 1fr);
     }
 
+    .footer-content--four-col {
+      grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr) minmax(0, 1fr);
+    }
+
+    .footer-content--four-col > :first-child {
+      grid-column: 1;
+      grid-row: 1 / 3;
+    }
+
+    .footer-content--four-col > :nth-child(4) {
+      grid-column: 1 / -1;
+    }
+
     .footer-content--isolated-grid-item-tablet > :last-child {
       grid-column: 1 / -1;
     }
@@ -86,6 +219,10 @@
   @media screen and (min-width: 990px) {
     .footer-content {
       grid-template-columns: repeat(var(--grid-columns), 1fr);
+    }
+
+    .footer-content--four-col {
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2fr) minmax(0, 2fr) minmax(0, 3fr);
     }
 
     /* Single item centered */

@@ -48,20 +48,25 @@
       ref="container"
     >
       {% for collection in collection_list limit: limit %}
-        {% liquid
-          assign current = false
+        {% capture catalog_hidden %}
+          {% render 'collection-is-catalog-hidden', collection: collection %}
+        {% endcapture %}
+        {% unless catalog_hidden contains 'true' %}
+          {% liquid
+            assign current = false
 
-          if collection.id == active_collection.id
-            assign current = true
-          endif
-        %}
-        {% content_for 'block',
-          type: '_collection-link',
-          id: 'link',
-          closest.collection: collection,
-          index: forloop.index0,
-          current: current
-        %}
+            if collection.id == active_collection.id
+              assign current = true
+            endif
+          %}
+          {% content_for 'block',
+            type: '_collection-link',
+            id: 'link',
+            closest.collection: collection,
+            index: forloop.index0,
+            current: current
+          %}
+        {% endunless %}
       {% endfor %}
     </div>
 
@@ -69,6 +74,10 @@
       {% when 'spotlight' %}
         {% capture slides %}
           {% for collection in collection_list limit: limit %}
+          {% capture catalog_hidden %}
+            {% render 'collection-is-catalog-hidden', collection: collection %}
+          {% endcapture %}
+          {% unless catalog_hidden contains 'true' %}
           {% liquid
             assign current = false
 
@@ -89,6 +98,7 @@
           {% endcapture %}
 
           {% render 'slideshow-slide', children: slide, index: forloop.index0 %}
+          {% endunless %}
         {% endfor %}
       {% endcapture %}
 

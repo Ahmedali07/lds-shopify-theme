@@ -29,7 +29,7 @@
     flex-direction: column;
     align-items: center;
     gap: var(--gap);
-    text-wrap: nowrap;
+    text-wrap: wrap;
     border-top: var(--border-width) solid var(--divider-color, var(--color-border));
     color: var(--color-foreground-muted);
 
@@ -40,12 +40,24 @@
       gap: var(--gap);
       align-items: center;
       text-align: left;
+      text-wrap: nowrap;
     }
   }
 
   .utilities a,
   .utilities button {
     color: var(--color-utilities, var(--color-foreground-muted));
+    text-decoration: none;
+    transition: opacity 0.2s ease, color 0.2s ease;
+  }
+
+  .utilities a:hover,
+  .utilities a:focus-visible,
+  .utilities button:hover,
+  .utilities button:focus-visible {
+    opacity: 0.7;
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 
   .utilities > * {

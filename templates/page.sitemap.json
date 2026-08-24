@@ -1,0 +1,19 @@
+{
+  "sections": {
+    "main": {
+      "type": "html-sitemap",
+      "settings": {
+        "heading": "Sitemap",
+        "heading_preset": "h1",
+        "show_pages": true,
+        "show_collections": true,
+        "show_blogs": true,
+        "show_policies": true,
+        "section_width": "page-width",
+        "padding-block-start": 48,
+        "padding-block-end": 48
+      }
+    }
+  },
+  "order": ["main"]
+}

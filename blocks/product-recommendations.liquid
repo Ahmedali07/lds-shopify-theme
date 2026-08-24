@@ -97,6 +97,10 @@
       %}
       {% capture list_items %}
         {% for product in products limit: block_settings.max_products %}
+          {% capture catalog_hidden %}
+            {% render 'product-is-catalog-hidden', product: product %}
+          {% endcapture %}
+          {% unless catalog_hidden contains 'true' %}
           <div class="resource-list__item">
             {% content_for 'block',
               type: '_product-card',
@@ -109,6 +113,7 @@
               <!--@list/split-->
             {% endunless %}
           {% endif %}
+          {% endunless %}
         {% endfor %}
       {% endcapture %}
 

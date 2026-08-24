@@ -186,7 +186,7 @@
       <div class="{{ media_wrapper_mobile_class }}">
         {{
           section.settings.image_1_mobile
-          | image_url: width: 1600
+          | image_url: width: 3840
           | image_tag:
             width: section.settings.image_1_mobile.width,
             widths: mobile_widths,
@@ -290,7 +290,7 @@
       <div class="{{ media_wrapper_mobile_class }}">
         {{
           section.settings.image_2_mobile
-          | image_url: width: 1600
+          | image_url: width: 3840
           | image_tag:
             width: section.settings.image_2_mobile.width,
             widths: mobile_widths,
@@ -373,7 +373,7 @@
     {% if section.settings.custom_mobile_media == true and fallback_to_desktop == false %}
       {% if media_1_mobile == 'image' %}
         {{ section.settings.image_1_mobile
-          | image_url: width: 1600
+          | image_url: width: 3840
           | image_tag: width: section.settings.image_1_mobile.width,
             widths: mobile_widths,
             height: section.settings.image_1_mobile.height,
@@ -384,7 +384,7 @@
       {% endif %}
       {% if media_2_mobile == 'image' %}
         {{ section.settings.image_2_mobile
-          | image_url: width: 1600
+          | image_url: width: 3840
           | image_tag: width: section.settings.image_2_mobile.width,
             widths: mobile_widths,
             height: section.settings.image_2_mobile.height,
@@ -400,7 +400,7 @@
     {% if section.settings.custom_mobile_media == true and fallback_to_desktop == false %}
       {% if media_2_mobile == 'image' %}
         {{ section.settings.image_2_mobile
-          | image_url: width: 1600
+          | image_url: width: 3840
           | image_tag: width: section.settings.image_2_mobile.width,
             widths: mobile_widths,
             height: section.settings.image_2_mobile.height,
@@ -410,7 +410,7 @@
         }}
       {% elsif media_1_mobile == 'image' %}
         {{ section.settings.image_1_mobile
-          | image_url: width: 1600
+          | image_url: width: 3840
           | image_tag: width: section.settings.image_1_mobile.width,
             widths: mobile_widths,
             height: section.settings.image_1_mobile.height,
@@ -423,7 +423,7 @@
       {% if media_count > 0 %}
         {% if media_2 == 'image' %}
           {{ section.settings.image_2
-            | image_url: width: 1600
+            | image_url: width: 3840
             | image_tag: width: section.settings.image_2.width,
               widths: widths,
               height: section.settings.image_2.height,
@@ -433,7 +433,7 @@
             }}
         {% elsif media_1 == 'image' %}
           {{ section.settings.image_1
-            | image_url: width: 1600
+            | image_url: width: 3840
             | image_tag: width: section.settings.image_1.width,
               widths: widths,
               height: section.settings.image_1.height,
@@ -462,6 +462,7 @@
 <div
   id="Hero-{{ section.id }}"
   class="hero{% if section.settings.background_color != blank %} color-custom-{{ section.id }}{% endif %}{% if section.blocks.size == 0 and section.settings.section_height == 'auto' %} hero--no-blocks-auto-height{% endif %}{% if section.settings.stack_media_on_mobile %} hero--stack-mobile{% endif %}"
+  data-media-fit="{{ section.settings.media_fit | default: 'cover' }}"
   style="
     --hero-border-style: {{ section.settings.border }};
     --hero-border-width: {{ section.settings.border_width }}px;
@@ -634,6 +635,10 @@
     overflow: hidden;
     position: relative;
     z-index: var(--layer-base);
+  }
+
+  .hero[data-media-fit='contain'] .hero__media {
+    object-fit: contain;
   }
 
   /* Mobile/Desktop media visibility */
@@ -814,6 +819,7 @@
       "type": "image_picker",
       "id": "image_1",
       "label": "t:settings.image",
+      "info": "Recommended: 2880 × 1200 px (12:5). Upload at least 2400 px wide so the banner stays sharp on large screens. Keep important content in the center.",
       "visible_if": "{{ section.settings.media_type_1 == 'image' }}"
     },
     {
@@ -896,6 +902,7 @@
       "type": "image_picker",
       "id": "image_1_mobile",
       "label": "t:settings.image",
+      "info": "Recommended: 1200 × 1600 px (3:4). Use a separate crop for phones.",
       "visible_if": "{{ section.settings.custom_mobile_media and section.settings.media_type_1_mobile == 'image' }}"
     },
     {
@@ -1147,6 +1154,23 @@
       "default": 50,
       "unit": "%",
       "visible_if": "{{ section.settings.section_height == 'custom' }}"
+    },
+    {
+      "type": "select",
+      "id": "media_fit",
+      "label": "t:settings.media_fit",
+      "options": [
+        {
+          "value": "cover",
+          "label": "t:options.cover"
+        },
+        {
+          "value": "contain",
+          "label": "t:options.contain"
+        }
+      ],
+      "default": "cover",
+      "info": "Cover fills the banner and may crop edges. Contain shows the full image and may leave empty space."
     },
     {
       "type": "header",

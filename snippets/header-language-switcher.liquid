@@ -1,0 +1,101 @@
+{%- doc -%}
+  Language dropdown for the header and mobile drawer, matching the currency selector.
+
+  @param {string} form_id - Unique suffix for accessibility ids
+  @param {string} [form_style] - Inline styles for font family/size
+  @param {string} [localization_position] - left or right, used to align the dropdown panel
+  @param {string} [variant] - "dropdown" (default) or "drawer"
+{%- enddoc -%}
+
+{%- liquid
+  assign current_lang = localization.language.iso_code | downcase | split: '-' | first
+  assign panel_bound = localization_position | default: 'right'
+-%}
+
+{% if variant == 'drawer' %}
+  <drawer-localization-component class="menu-drawer__localization">
+    <details
+      id="drawer-localization-language"
+      class="drawer-localization"
+      on:toggle="/toggle"
+    >
+      <summary
+        id="HeaderDrawer-language"
+        class="drawer-localization__button h3 focus-inset"
+        aria-expanded="false"
+        on:click="header-drawer/open/submenu"
+        style="{{ form_style }}"
+      >
+        <div class="drawer-localization__button--label h6">
+          <span>{{ current_lang | upcase }}</span>
+        </div>
+        <span class="svg-wrapper icon-caret icon-caret--forward">
+          {{- 'icon-caret.svg' | inline_asset_content -}}
+        </span>
+      </summary>
+
+      <div class="menu-drawer__submenu has-submenu color-custom-drawer">
+        <div
+          class="menu-drawer__nav-buttons menu-drawer__nav-buttons--with-title"
+          ref="navButtons"
+        >
+          <button
+            class="button menu-drawer__back-button focus-inset"
+            on:click="header-drawer/back"
+            aria-label="{{ 'actions.back_to_main_menu' | t }}"
+          >
+            <span class="svg-wrapper icon-caret icon-caret--backward">
+              {{- 'icon-caret.svg' | inline_asset_content -}}
+            </span>
+          </button>
+          <span class="menu-drawer__title">
+            {{- 'content.language' | t -}}
+          </span>
+          <button
+            class="button close-button menu-drawer__close-button focus-inset"
+            type="button"
+            aria-label="{{ 'actions.close' | t }}"
+            on:click="header-drawer/close"
+          >
+            <span class="svg-wrapper header-drawer-icon header-drawer-icon--close">
+              {{- 'icon-close-menu.svg' | inline_asset_content -}}
+            </span>
+          </button>
+        </div>
+
+        <localization-form-component ref="localizationForm">
+          {% render 'header-language-options', form_id: form_id %}
+        </localization-form-component>
+      </div>
+    </details>
+  </drawer-localization-component>
+{% else %}
+  <dropdown-localization-component class="dropdown-localization dropdown-localization--language">
+    <button
+      type="button"
+      class="button dropdown-localization__button localization-selector header-actions__action"
+      aria-expanded="false"
+      aria-controls="dropdown-language-results-{{ form_id }}"
+      ref="button"
+      on:click="/toggleSelector"
+      style="{{ form_style }}"
+    >
+      <span>{{ current_lang | upcase }}</span>
+      <span class="visually-hidden">{{ 'content.language' | t }}</span>
+      <span class="svg-wrapper icon-caret">
+        {{- 'icon-caret.svg' | inline_asset_content -}}
+      </span>
+    </button>
+
+    <div
+      id="dropdown-language-results-{{ form_id }}"
+      class="localization-wrapper {{ panel_bound }}-bound color-custom-popover"
+      hidden
+      ref="panel"
+    >
+      <localization-form-component ref="localizationForm">
+        {% render 'header-language-options', form_id: form_id %}
+      </localization-form-component>
+    </div>
+  </dropdown-localization-component>
+{% endif %}

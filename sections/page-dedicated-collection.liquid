@@ -1,0 +1,267 @@
+{% liquid
+  assign collection = nil
+  assign intro = ''
+  assign page_heading = page.title
+
+  case page.handle
+    when 'wholesale', 'wholesale-products'
+      assign collection = collections['wholesale']
+      if collection == blank
+        assign collection = collections['wholesale-products']
+      endif
+      assign intro = 'lds.wholesale.intro' | t
+      assign page_heading = 'lds.wholesale.title' | t
+    when 'used-products'
+      assign collection = collections['used-products']
+      assign intro = 'lds.used_products.intro' | t
+      assign page_heading = 'lds.used_products.title' | t
+  endcase
+%}
+
+{% if intro != blank %}
+  {% liquid
+    assign columns = section.settings.columns | default: 4
+    assign placeholder_count = columns | times: 2
+    assign max_items = section.settings.max_products | default: 12
+    assign showing_placeholders = false
+  %}
+
+  <div
+    class="section-background"
+  ></div>
+  <div
+    class="
+      section
+      section--page-width
+      section-resource-list
+      spacing-style
+      gap-style
+      page-dedicated-collection
+    "
+    style="
+      {% render 'spacing-style', settings: section.settings %}
+      {% render 'gap-style', value: section.settings.gap %}
+    "
+  >
+    <div class="page-dedicated-collection__intro">
+      <h1 class="page-dedicated-collection__title">{{ page_heading }}</h1>
+      <p>{{ intro }}</p>
+    </div>
+
+    {% capture list_items %}
+      {% if collection != blank and collection.products_count > 0 %}
+        {% paginate collection.products by max_items %}
+          {% for product in collection.products limit: max_items %}
+            <div class="resource-list__item">
+              {% content_for 'block',
+                type: '_product-card',
+                id: 'static-product-card',
+                closest.product: product,
+                product_view_context: 'collection'
+              %}
+            </div>
+            <!--@list/split-->
+          {% endfor %}
+        {% endpaginate %}
+      {% endif %}
+    {% endcapture %}
+
+    {% assign rendered_items = list_items | strip %}
+    {% if rendered_items == blank %}
+      {% assign showing_placeholders = true %}
+      {% capture list_items %}
+        {% for i in (1..placeholder_count) %}
+          <div class="resource-list__item">
+            {% content_for 'block', type: '_product-card', id: 'static-product-card', closest.product: null %}
+          </div>
+          {% unless forloop.last %}
+            <!--@list/split-->
+          {% endunless %}
+        {% endfor %}
+      {% endcapture %}
+    {% endif %}
+
+    {% liquid
+      assign list_items_array = list_items | strip | split: '<!--@list/split-->'
+    %}
+
+    <div
+      class="{% if showing_placeholders %}product-list--placeholders{% endif %}"
+    >
+      {% render 'resource-list',
+        list_items: list_items,
+        list_items_array: list_items_array,
+        settings: section.settings,
+        slide_count: max_items,
+        content_type: 'products',
+        test_id: 'dedicated-collection-grid'
+      %}
+    </div>
+  </div>
+{% endif %}
+
+{% stylesheet %}
+  body:has(.page-dedicated-collection) .page-width-content {
+    display: none;
+  }
+
+  .page-dedicated-collection__intro {
+    max-width: 40rem;
+    margin-block-end: 1.5rem;
+    text-align: start;
+  }
+
+  .page-dedicated-collection__title {
+    margin: 0 0 0.75rem;
+    text-align: start;
+  }
+
+  .page-dedicated-collection__intro p {
+    margin: 0;
+    text-align: start;
+  }
+
+  @media screen and (max-width: 749px) {
+    .product-list--placeholders .resource-list__item:nth-child(n + 5) {
+      display: none;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Dedicated collection",
+  "class": "section-wrapper",
+  "enabled_on": {
+    "templates": ["page"]
+  },
+  "blocks": [
+    {
+      "type": "_product-card"
+    }
+  ],
+  "settings": [
+    {
+      "type": "range",
+      "id": "max_products",
+      "label": "t:settings.product_count",
+      "min": 1,
+      "max": 16,
+      "step": 1,
+      "default": 12
+    },
+    {
+      "type": "select",
+      "id": "layout_type",
+      "label": "t:settings.layout_type",
+      "options": [
+        {
+          "value": "grid",
+          "label": "t:options.grid"
+        }
+      ],
+      "default": "grid"
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "label": "t:settings.columns",
+      "min": 1,
+      "max": 8,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "select",
+      "id": "mobile_columns",
+      "label": "t:settings.mobile_columns",
+      "options": [
+        {
+          "value": "1",
+          "label": "t:options.one_number"
+        },
+        {
+          "value": "2",
+          "label": "t:options.two_number"
+        }
+      ],
+      "default": "2"
+    },
+    {
+      "type": "range",
+      "id": "columns_gap",
+      "label": "t:settings.horizontal_gap",
+      "min": 0,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "rows_gap",
+      "label": "t:settings.vertical_gap",
+      "min": 0,
+      "max": 48,
+      "step": 1,
+      "unit": "px",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "label": "t:settings.gap",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 28
+    },
+    {
+      "type": "range",
+      "id": "padding-block-start",
+      "label": "t:settings.top",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "padding-block-end",
+      "label": "t:settings.bottom",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-start",
+      "label": "t:settings.left",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding-inline-end",
+      "label": "t:settings.right",
+      "min": 0,
+      "max": 100,
+      "step": 1,
+      "unit": "px",
+      "default": 0
+    }
+  ],
+  "presets": [
+    {
+      "name": "Dedicated collection"
+    }
+  ]
+}
+{% endschema %}

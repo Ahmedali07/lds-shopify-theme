@@ -13,12 +13,18 @@
 >
   <div class="html-sitemap">
     {% if section.settings.heading != blank %}
-      <h1 class="html-sitemap__title {{ section.settings.heading_preset }}">{{ section.settings.heading }}</h1>
+      {% liquid
+        assign sitemap_heading = section.settings.heading
+        if sitemap_heading == 'Sitemap'
+          assign sitemap_heading = 'lds.sitemap.title' | t
+        endif
+      %}
+      <h1 class="html-sitemap__title {{ section.settings.heading_preset }}">{{ sitemap_heading }}</h1>
     {% endif %}
 
     {% if section.settings.show_pages %}
       <nav class="html-sitemap__group" aria-labelledby="SitemapPages-{{ section.id }}">
-        <h2 id="SitemapPages-{{ section.id }}" class="html-sitemap__heading h4">Pages</h2>
+        <h2 id="SitemapPages-{{ section.id }}" class="html-sitemap__heading h4">{{ 'lds.sitemap.pages' | t }}</h2>
         <ul class="html-sitemap__list list-unstyled">
           <li>
             <a href="{{ routes.root_url }}">{{ shop.name }}</a>
@@ -34,7 +40,7 @@
 
     {% if section.settings.show_collections %}
       <nav class="html-sitemap__group" aria-labelledby="SitemapCollections-{{ section.id }}">
-        <h2 id="SitemapCollections-{{ section.id }}" class="html-sitemap__heading h4">Collections</h2>
+        <h2 id="SitemapCollections-{{ section.id }}" class="html-sitemap__heading h4">{{ 'lds.sitemap.collections' | t }}</h2>
         <ul class="html-sitemap__list list-unstyled">
           {% for collection in collections %}
             {% capture catalog_hidden %}
@@ -70,7 +76,7 @@
 
     {% if section.settings.show_policies %}
       <nav class="html-sitemap__group" aria-labelledby="SitemapPolicies-{{ section.id }}">
-        <h2 id="SitemapPolicies-{{ section.id }}" class="html-sitemap__heading h4">Policies</h2>
+        <h2 id="SitemapPolicies-{{ section.id }}" class="html-sitemap__heading h4">{{ 'lds.sitemap.policies' | t }}</h2>
         <ul class="html-sitemap__list list-unstyled">
           {% if shop.privacy_policy %}
             <li>

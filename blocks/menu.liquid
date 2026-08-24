@@ -30,6 +30,22 @@
       assign should_disable_on_mobile = true
       assign should_open_by_default_on_mobile = true
     endif
+
+    assign curated = block_settings.curated_footer_links | default: 'none'
+    if curated == blank
+      assign curated = 'none'
+    endif
+    if curated == 'none' and block_settings.heading == 'Quick links'
+      assign curated = 'shop'
+    endif
+    if curated == 'none' and block_settings.heading == 'Information'
+      assign curated = 'information'
+    endif
+    if curated == 'shop'
+      assign heading = 'lds.footer.quick_links' | t
+    elsif curated == 'information'
+      assign heading = 'lds.footer.information' | t
+    endif
   -%}
   {% capture menu_accordion_children %}
     <details
@@ -70,8 +86,79 @@
           aria-label="{{ menu.title | escape }}"
         {% endif %}
       >
-        {% if menu %}
-          <ul class="list-unstyled">
+        {% liquid
+          assign curated = block_settings.curated_footer_links | default: 'none'
+          if curated == blank
+            assign curated = 'none'
+          endif
+          if curated == 'none' and block_settings.heading == 'Quick links'
+            assign curated = 'shop'
+          endif
+          if curated == 'none' and block_settings.heading == 'Information'
+            assign curated = 'information'
+          endif
+        %}
+        <ul class="list-unstyled">
+          {% if curated == 'shop' %}
+            {% liquid
+              assign wholesale_href = collections['wholesale'].url | default: '/collections/wholesale'
+              assign used_products_href = collections['used-products'].url | default: '/collections/used-products'
+              if pages['wholesale'].handle == 'wholesale'
+                assign wholesale_href = pages['wholesale'].url
+              elsif pages['wholesale-products'].handle == 'wholesale-products'
+                assign wholesale_href = pages['wholesale-products'].url
+              endif
+              if pages['used-products'].handle == 'used-products'
+                assign used_products_href = pages['used-products'].url
+              endif
+            %}
+            <li class="menu__item {{ block_settings.link_preset }}">
+              <a href="{{ routes.root_url }}">{{ 'lds.footer.home' | t }}</a>
+            </li>
+            <li class="menu__item {{ block_settings.link_preset }}">
+              <a href="{{ routes.all_products_collection_url }}">{{ 'lds.footer.catalog' | t }}</a>
+            </li>
+            <li class="menu__item {{ block_settings.link_preset }}">
+              <a href="{{ wholesale_href }}">{{ 'lds.footer.wholesale' | t }}</a>
+            </li>
+            <li class="menu__item {{ block_settings.link_preset }}">
+              <a href="{{ used_products_href }}">{{ 'lds.footer.used_products' | t }}</a>
+            </li>
+          {% elsif curated == 'information' %}
+            {% if pages['contact'].handle == 'contact' %}
+              <li class="menu__item {{ block_settings.link_preset }}">
+                <a href="{{ pages['contact'].url }}">{{ 'lds.footer.contact' | t }}</a>
+              </li>
+            {% endif %}
+            <li class="menu__item {{ block_settings.link_preset }}">
+              <a href="{{ routes.search_url }}">{{ 'content.search' | t }}</a>
+            </li>
+            {% if pages['sitemap'].handle == 'sitemap' %}
+              <li class="menu__item {{ block_settings.link_preset }}">
+                <a href="{{ pages['sitemap'].url }}">{{ 'lds.footer.sitemap' | t }}</a>
+              </li>
+            {% endif %}
+            {% if shop.privacy_policy %}
+              <li class="menu__item {{ block_settings.link_preset }}">
+                <a href="{{ shop.privacy_policy.url }}">{{ shop.privacy_policy.title }}</a>
+              </li>
+            {% endif %}
+            {% if shop.refund_policy %}
+              <li class="menu__item {{ block_settings.link_preset }}">
+                <a href="{{ shop.refund_policy.url }}">{{ shop.refund_policy.title }}</a>
+              </li>
+            {% endif %}
+            {% if shop.shipping_policy %}
+              <li class="menu__item {{ block_settings.link_preset }}">
+                <a href="{{ shop.shipping_policy.url }}">{{ shop.shipping_policy.title }}</a>
+              </li>
+            {% endif %}
+            {% if shop.terms_of_service %}
+              <li class="menu__item {{ block_settings.link_preset }}">
+                <a href="{{ shop.terms_of_service.url }}">{{ shop.terms_of_service.title }}</a>
+              </li>
+            {% endif %}
+          {% elsif menu %}
             {% for link in menu.links %}
               <li class="menu__item {{ block_settings.link_preset }}">
                 <a href="{{ link.url }}">
@@ -79,8 +166,8 @@
                 </a>
               </li>
             {% endfor %}
-          </ul>
-        {% endif %}
+          {% endif %}
+        </ul>
       </nav>
     </details>
   {% endcapture %}
@@ -166,6 +253,26 @@
       "type": "text",
       "id": "heading",
       "label": "t:settings.heading"
+    },
+    {
+      "type": "select",
+      "id": "curated_footer_links",
+      "label": "Footer link set",
+      "options": [
+        {
+          "value": "none",
+          "label": "Use selected menu"
+        },
+        {
+          "value": "shop",
+          "label": "Shop links"
+        },
+        {
+          "value": "information",
+          "label": "Information links"
+        }
+      ],
+      "default": "none"
     },
     {
       "type": "header",

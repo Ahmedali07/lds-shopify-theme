@@ -63,6 +63,8 @@
   {% endif %}
   {{- block.shopify_attributes -}}
 >
+  {{ localization }}
+
   {% if shop.customer_accounts_enabled %}
     {% liquid
       assign account_actions_style = ''
@@ -220,10 +222,15 @@
 
   header-actions {
     display: flex;
+    align-items: center;
 
     @media screen and (max-width: 749px) {
       justify-self: flex-end;
     }
+  }
+
+  header-actions .header-localization-group {
+    margin-inline-end: var(--gap-xs);
   }
 
   @media screen and (min-width: 750px) {

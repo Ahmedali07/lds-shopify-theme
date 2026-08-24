@@ -120,6 +120,7 @@
           "settings": {
             "menu": "main-menu",
             "heading": "Quick links",
+            "curated_footer_links": "shop",
             "menu_spacing": 8,
             "show_as_accordion": true,
             "accordion_icon": "caret",
@@ -138,6 +139,7 @@
           "settings": {
             "menu": "footer",
             "heading": "Information",
+            "curated_footer_links": "information",
             "menu_spacing": 8,
             "show_as_accordion": true,
             "accordion_icon": "caret",

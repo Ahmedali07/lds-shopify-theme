@@ -1,0 +1,63 @@
+{%- doc -%}
+  Shared French and English options for the localization form.
+
+  @param {string} form_id - Unique suffix for accessibility ids
+{%- enddoc -%}
+
+{%- liquid
+  assign current_lang = localization.language.iso_code | downcase | split: '-' | first
+-%}
+
+{%- form 'localization', class: 'localization-form' -%}
+  <input
+    type="hidden"
+    name="country_code"
+    value="{{ localization.country.iso_code }}"
+  >
+
+  <div class="country-selector-form__wrapper">
+    <h2 class="visually-hidden" id="LanguageListLabel-{{ form_id }}">
+      {{ 'content.language' | t }}
+    </h2>
+    <ul
+      class="list-unstyled localization-form__list"
+      role="list"
+      aria-labelledby="LanguageListLabel-{{ form_id }}"
+    >
+      <li>
+        <button
+          type="submit"
+          name="language_code"
+          value="fr"
+          class="localization-form__list-item header-language-option"
+          lang="fr"
+          {% if current_lang == 'fr' %}
+            aria-current="true"
+          {% endif %}
+        >
+          <span class="svg-wrapper icon-checkmark">
+            {{- 'icon-checkmark.svg' | inline_asset_content -}}
+          </span>
+          <span class="country">Français</span>
+        </button>
+      </li>
+      <li>
+        <button
+          type="submit"
+          name="language_code"
+          value="en"
+          class="localization-form__list-item header-language-option"
+          lang="en"
+          {% if current_lang == 'en' %}
+            aria-current="true"
+          {% endif %}
+        >
+          <span class="svg-wrapper icon-checkmark">
+            {{- 'icon-checkmark.svg' | inline_asset_content -}}
+          </span>
+          <span class="country">English</span>
+        </button>
+      </li>
+    </ul>
+  </div>
+{%- endform -%}

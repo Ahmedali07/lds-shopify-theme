@@ -256,16 +256,68 @@
           ref="languageInput"
           on:change="/changeLanguage"
         >
+          {%- liquid
+            assign has_fr = false
+            assign has_en = false
+            assign current_lang = localization.language.iso_code | downcase | split: '-' | first
+          -%}
           {%- for language in localization.available_languages -%}
+            {%- assign lang_code = language.iso_code | downcase | split: '-' | first -%}
+            {%- if lang_code == 'fr' -%}
+              {%- assign has_fr = true -%}
+            {%- elsif lang_code == 'en' -%}
+              {%- assign has_en = true -%}
+            {%- endif -%}
+          {%- endfor -%}
+          {%- unless has_fr -%}
             <option
-              value="{{ language.iso_code }}"
-              lang="{{ language.iso_code }}"
-              {% if language.iso_code == localization.language.iso_code %}
+              value="fr"
+              lang="fr"
+              {% if current_lang == 'fr' %}
                 selected
               {% endif %}
             >
-              {{ language.endonym_name | capitalize }}
+              Français
             </option>
+          {%- endunless -%}
+          {%- for language in localization.available_languages -%}
+            {%- assign lang_code = language.iso_code | downcase | split: '-' | first -%}
+            {%- if lang_code == 'fr' -%}
+              <option
+                value="{{ language.iso_code }}"
+                lang="{{ language.iso_code }}"
+                {% if language.iso_code == localization.language.iso_code %}
+                  selected
+                {% endif %}
+              >
+                {{ language.endonym_name | capitalize }}
+              </option>
+            {%- endif -%}
+          {%- endfor -%}
+          {%- unless has_en -%}
+            <option
+              value="en"
+              lang="en"
+              {% if current_lang == 'en' %}
+                selected
+              {% endif %}
+            >
+              English
+            </option>
+          {%- endunless -%}
+          {%- for language in localization.available_languages -%}
+            {%- assign lang_code = language.iso_code | downcase | split: '-' | first -%}
+            {%- unless lang_code == 'fr' -%}
+              <option
+                value="{{ language.iso_code }}"
+                lang="{{ language.iso_code }}"
+                {% if language.iso_code == localization.language.iso_code %}
+                  selected
+                {% endif %}
+              >
+                {{ language.endonym_name | capitalize }}
+              </option>
+            {%- endunless -%}
           {%- endfor -%}
         </select>
         <span class="svg-wrapper icon-caret">

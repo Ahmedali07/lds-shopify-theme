@@ -371,5 +371,53 @@
       "default_title": "Default Title",
       "sticky_add_to_cart": "Quick add to cart bar"
     }
+  },
+  "lds": {
+    "footer": {
+      "quick_links": "Quick links",
+      "information": "Information",
+      "home": "Home",
+      "catalog": "Catalog",
+      "wholesale": "Wholesale",
+      "used_products": "Used Products",
+      "contact": "Contact",
+      "sitemap": "Sitemap",
+      "newsletter": "Newsletter",
+      "newsletter_text": "Get exclusive deals and early access to new products.",
+      "brand_text": "Property maintenance and security supplies for landlords and letting agents. Quality products, straightforward buying."
+    },
+    "wholesale": {
+      "title": "Wholesale",
+      "intro": "Trade and bulk orders for landlords and letting agents."
+    },
+    "used_products": {
+      "title": "Used Products",
+      "intro": "Returned and checked products, tested and ready to use."
+    },
+    "catalogue": {
+      "title": "Catalogue"
+    },
+    "sitemap": {
+      "title": "Sitemap",
+      "pages": "Pages",
+      "collections": "Collections",
+      "policies": "Policies"
+    },
+    "products": "Products",
+    "header": {
+      "choose_language": "Choose language",
+      "french": "French",
+      "english": "English"
+    },
+    "search": {
+      "placeholder": "Search products",
+      "submit": "Search",
+      "results_count": {
+        "one": "{{ count }} result for \"{{ terms }}\"",
+        "other": "{{ count }} results for \"{{ terms }}\""
+      },
+      "recent": "Recent searches",
+      "clear_recent": "Clear"
+    }
   }
 }

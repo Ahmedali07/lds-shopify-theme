@@ -29,8 +29,17 @@
     {%- content_for 'block', type: '_product-list-content', id: 'static-header' -%}
   </div>
 
+  {% liquid
+    assign columns = section.settings.columns | default: 4
+    assign placeholder_count = columns | times: 2
+    if placeholder_count < 2
+      assign placeholder_count = 8
+    endif
+    assign showing_placeholders = false
+  %}
+
   {% capture list_items %}
-    {% if section.settings.collection != blank and shop.products_count != 0 %}
+    {% if section.settings.collection != blank %}
       {% paginate section.settings.collection.products by max_items %}
         {% capture dedicated_collection %}
           {% render 'restricted-collection-context', handle: section.settings.collection.handle %}
@@ -60,34 +69,43 @@
           {% endif %}
         {% endfor %}
       {% endpaginate %}
-    {% else %}
-      {% for i in (1..max_items) %}
+    {% endif %}
+  {% endcapture %}
+
+  {% assign rendered_items = list_items | strip %}
+  {% if rendered_items == blank %}
+    {% assign showing_placeholders = true %}
+    {% capture list_items %}
+      {% for i in (1..placeholder_count) %}
         <div
           class="resource-list__item"
         >
-            {% content_for 'block', type: '_product-card', id: 'static-product-card', closest.product: null %}
+          {% content_for 'block', type: '_product-card', id: 'static-product-card', closest.product: null %}
         </div>
-
         {% unless forloop.last %}
           <!--@list/split-->
         {% endunless %}
       {% endfor %}
-    {% endif %}
-  {% endcapture %}
+    {% endcapture %}
+  {% endif %}
 
   {% liquid
     # Create an array from the list items to be used for different layout types
     assign list_items_array = list_items | strip | split: '<!--@list/split-->'
   %}
 
-  {% render 'resource-list',
-    list_items: list_items,
-    list_items_array: list_items_array,
-    settings: section.settings,
-    slide_count: max_items,
-    content_type: 'products',
-    test_id: 'resource-list-grid'
-  %}
+  <div
+    class="{% if showing_placeholders %}product-list--placeholders{% endif %}"
+  >
+    {% render 'resource-list',
+      list_items: list_items,
+      list_items_array: list_items_array,
+      settings: section.settings,
+      slide_count: max_items,
+      content_type: 'products',
+      test_id: 'resource-list-grid'
+    %}
+  </div>
 
   <div
     class="section-resource-list__content"
@@ -96,6 +114,14 @@
     {%- content_for 'blocks' -%}
   </div>
 </div>
+
+{% stylesheet %}
+  @media screen and (max-width: 749px) {
+    .product-list--placeholders .resource-list__item:nth-child(n + 5) {
+      display: none;
+    }
+  }
+{% endstylesheet %}
 
 {% schema %}
 {

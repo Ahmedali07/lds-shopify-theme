@@ -96,8 +96,100 @@
     content_for 'block', type: '_header-menu', id: 'header-menu', variant: 'navigation_bar', transparent: transparent
   endcapture
 
+  assign show_language = section.settings.show_language
+  assign show_country = section.settings.show_country
+  if localization.available_countries.size <= 1
+    assign show_country = false
+  endif
+%}
+
+{% capture localization_markup %}
+  {% liquid
+    assign localization_font = '--menu-localization-font: var(--font-[localization_font]--family); ' | replace: '[localization_font]', section.settings.localization_font
+    assign localization_font_size = '--menu-localization-font-size: [localization_font_size]; ' | replace: '[localization_font_size]', section.settings.localization_font_size
+    assign color_shadow = '--color-shadow: rgb(var(--color-foreground-rgb) / var(--opacity-10-25));'
+    assign form_style = localization_font | append: localization_font_size | append: color_shadow
+  %}
+  {% if show_language or show_country %}
+    <div class="header-localization-group dropdown-localization mobile:hidden">
+      {% if show_language %}
+        {% render 'header-language-switcher',
+          form_id: section.id,
+          form_style: form_style,
+          localization_position: section.settings.localization_position
+        %}
+      {% endif %}
+
+      {% if show_country %}
+        <dropdown-localization-component class="dropdown-localization">
+          <button
+            type="button"
+            class="button dropdown-localization__button localization-selector header-actions__action"
+            aria-expanded="false"
+            aria-controls="dropdown-country-results-{{ section.id }}"
+            ref="button"
+            on:click="/toggleSelector"
+            style="{{ localization_font }} {{ localization_font_size }}"
+          >
+            {% if section.settings.country_selector_style == true %}
+              {% assign localization_background_color = 'background_color_[row]' | replace: '[row]', section.settings.localization_row %}
+              {% liquid
+                assign background_brightness = section.settings[localization_background_color] | color_brightness
+                if background_brightness < 64
+                  assign shadow_size = 4
+                else
+                  assign shadow_size = 2
+                endif
+              %}
+              <span
+                class="icon-flag"
+                style="
+                  background-image: url({{- localization.country | image_url: width: 32 }});
+                  --size-shadow: {{ shadow_size }}px;
+                  --color-shadow: rgb(var(--color-foreground-rgb) / var(--opacity-30-60));
+                "
+              ></span>
+            {% endif %}
+            <span
+              class="currency-code"
+              data-testid="localization-currency-code"
+            >
+              {{- localization.country.currency.iso_code -}}
+            </span>
+            <span
+              class="visually-hidden"
+              data-testid="localization-visually-hidden"
+            >
+              {{- 'accessibility.localization_region_and_language' | t -}}
+            </span>
+            <span class="svg-wrapper icon-caret">
+              {{- 'icon-caret.svg' | inline_asset_content -}}
+            </span>
+          </button>
+
+          <div
+            id="dropdown-country-results-{{ section.id }}"
+            class="localization-wrapper {{ section.settings.localization_position }}-bound color-custom-popover"
+            hidden
+            ref="panel"
+          >
+            {% render 'localization-form',
+              show_country: true,
+              show_language: false,
+              localization_style: 'dropdown',
+              form_style: form_style,
+              form_id: section.id
+            %}
+          </div>
+        </dropdown-localization-component>
+      {% endif %}
+    </div>
+  {% endif %}
+{% endcapture %}
+
+{% liquid
   capture actions
-    render 'header-actions', customer_account_menu: section.settings.customer_account_menu, display_style: section.settings.actions_display_style, section: section
+    render 'header-actions', customer_account_menu: section.settings.customer_account_menu, display_style: section.settings.actions_display_style, section: section, localization: localization_markup
   endcapture
 
   if shop.customer_accounts_enabled
@@ -147,16 +239,6 @@
     endcapture
   endif
 
-  assign show_language = section.settings.show_language
-  if localization.available_languages.size <= 1
-    assign show_language = false
-  endif
-
-  assign show_country = section.settings.show_country
-  if localization.available_countries.size <= 1
-    assign show_country = false
-  endif
-
   assign bottom_row_blocks = ''
 
   if section.settings.menu_row == 'bottom'
@@ -166,12 +248,6 @@
   if section.settings.search_style != 'none'
     if section.settings.search_row == 'bottom'
       assign bottom_row_blocks = bottom_row_blocks | append: 'search,'
-    endif
-  endif
-
-  if section.settings.show_country or section.settings.show_language
-    if section.settings.localization_row == 'bottom'
-      assign bottom_row_blocks = bottom_row_blocks | append: 'localization,'
     endif
   endif
 
@@ -215,101 +291,6 @@
     assign background_transparent_color_value = 'bottom'
   endif
 %}
-
-{% capture localization_markup %}
-  {% liquid
-    assign localization_font = '--menu-localization-font: var(--font-[localization_font]--family); ' | replace: '[localization_font]', section.settings.localization_font
-    assign localization_font_size = '--menu-localization-font-size: [localization_font_size]; ' | replace: '[localization_font_size]', section.settings.localization_font_size
-    assign color_shadow = '--color-shadow: rgb(var(--color-foreground-rgb) / var(--opacity-10-25));'
-    assign form_style = localization_font | append: localization_font_size | append: color_shadow
-  %}
-  {% if show_language and show_country == false %}
-    <div class="dropdown-localization mobile:hidden">
-      {% render 'localization-form',
-        show_country: show_country,
-        show_language: show_language,
-        localization_style: 'dropdown',
-        form_style: form_style,
-        form_id: section.id
-      %}
-    </div>
-  {% elsif show_country %}
-    <dropdown-localization-component
-      class="dropdown-localization mobile:hidden"
-    >
-      <button
-        type="button"
-        class="button dropdown-localization__button localization-selector header-actions__action"
-        aria-expanded="false"
-        aria-controls="dropdown-localization-results"
-        ref="button"
-        on:click="/toggleSelector"
-        style="{{ localization_font }} {{ localization_font_size }}"
-      >
-        {% if show_country %}
-          {% if section.settings.country_selector_style == true %}
-            {% assign localization_background_color = 'background_color_[row]' | replace: '[row]', section.settings.localization_row %}
-            {% liquid
-              assign background_brightness = section.settings[localization_background_color] | color_brightness
-              if background_brightness < 64
-                assign shadow_size = 4
-              else
-                assign shadow_size = 2
-              endif
-            %}
-            <span
-              class="icon-flag"
-              style="
-                background-image: url({{- localization.country | image_url: width: 32 }});
-                --size-shadow: {{ shadow_size }}px;
-                --color-shadow: rgb(var(--color-foreground-rgb) / var(--opacity-30-60));
-              "
-            ></span>
-          {% endif %}
-          <span
-            class="currency-code"
-            data-testid="localization-currency-code"
-          >
-            {{- localization.country.currency.iso_code -}}
-          </span>
-        {% endif %}
-        <span
-          class="visually-hidden"
-          data-testid="localization-visually-hidden"
-        >
-          {{- 'accessibility.localization_region_and_language' | t -}}
-        </span>
-
-        {%- if show_country and show_language -%}
-          <span>/</span>
-        {%- endif -%}
-
-        {%- if show_language -%}
-          <span>
-            {{ localization.language.iso_code | upcase }}
-          </span>
-        {%- endif -%}
-        <span class="svg-wrapper icon-caret">
-          {{- 'icon-caret.svg' | inline_asset_content -}}
-        </span>
-      </button>
-
-      <div
-        class="localization-wrapper {{ section.settings.localization_position }}-bound color-custom-popover"
-        hidden
-        ref="panel"
-      >
-        {% render 'localization-form',
-          show_country: show_country,
-          show_language: show_language,
-          localization_style: 'dropdown',
-          form_style: form_style,
-          form_id: section.id
-        %}
-      </div>
-    </dropdown-localization-component>
-  {% endif %}
-{% endcapture %}
 
 <script type="application/ld+json">
   {
@@ -435,7 +416,7 @@
         logo: logo,
         menu: menu,
         actions: actions,
-        localization: localization_markup,
+        localization: '',
         search: search,
         drawer_search: drawer_search
       %}
@@ -503,6 +484,24 @@
     #header-component[data-menu-style='menu'] :is(.header-menu, .dropdown-localization) {
       display: flex;
     }
+  }
+
+  .header-localization-group {
+    align-items: center;
+    gap: 4px;
+  }
+
+  button.header-language-option {
+    width: 100%;
+    border: 0;
+    background: none;
+    font: inherit;
+    color: inherit;
+    text-align: start;
+  }
+
+  .dropdown-localization--language .localization-wrapper {
+    min-width: 10rem;
   }
 
   #header-component[data-menu-style='drawer'] .header__column {

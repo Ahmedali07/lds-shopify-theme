@@ -15,8 +15,8 @@
           "type": "_heading",
           "static": true,
           "settings": {
-            "type_preset": "h2",
-            "font": "var(--font-body--family)",
+            "type_preset": "h1",
+            "font": "var(--font-heading--family)",
             "line_height": "normal",
             "letter_spacing": "normal",
             "case": "none",
@@ -35,8 +35,8 @@
           "type": "_search-input",
           "static": true,
           "settings": {
-            "width": "custom",
-            "custom_width": 50
+            "width": "fill",
+            "custom_width": 100
           },
           "blocks": {}
         }
@@ -44,8 +44,8 @@
       "settings": {
         "alignment": "flex-start",
         "background_color": "{{ settings.color_palette.background }}",
-        "padding-block-start": 40,
-        "padding-block-end": 0
+        "padding-block-start": 32,
+        "padding-block-end": 16
       }
     },
     "main": {
@@ -168,8 +168,8 @@
         "padding-inline-start": 0,
         "padding-inline-end": 0,
         "background_color": "{{ settings.color_palette.background }}",
-        "padding-block-start": 40,
-        "padding-block-end": 40
+        "padding-block-start": 16,
+        "padding-block-end": 48
       }
     }
   },

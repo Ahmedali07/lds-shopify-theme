@@ -24,13 +24,62 @@
     {% endif %}
 
     {% capture heading_text %}
-      <h3>{{ heading_text }}</h3>
+      <h1 class="search-page__title">{{ heading_text }}</h1>
     {% endcapture %}
 
-    {% content_for 'block', id: 'heading', type: '_heading', text: heading_text %}
+    <div class="search-page__heading-row">
+      {% content_for 'block', id: 'heading', type: '_heading', text: heading_text %}
+
+      {% if search.performed %}
+        <p class="search-page__count">
+          {{ 'lds.search.results_count' | t: count: search.results_count, terms: search.terms }}
+        </p>
+      {% endif %}
+    </div>
+
     {% content_for 'block', id: 'search', type: '_search-input' %}
   </div>
 </div>
+
+{% stylesheet %}
+  .search-page__header {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: var(--gap-md);
+  }
+
+  .search-page__heading-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--gap-sm) var(--gap-lg);
+    width: 100%;
+  }
+
+  .search-page__heading-row > *,
+  .search-page__heading-row .text-block {
+    width: auto;
+    max-width: 100%;
+    flex: 1 1 auto;
+  }
+
+  .search-page__title {
+    margin: 0;
+  }
+
+  .search-page__count {
+    flex: 0 0 auto;
+    margin: 0;
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
+    font-size: var(--font-size-sm, 0.875rem);
+  }
+
+  .search-page__header .search-page-input__parent {
+    width: 100%;
+  }
+{% endstylesheet %}
 
 {% schema %}
 {

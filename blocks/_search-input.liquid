@@ -6,85 +6,126 @@
   type="module"
 ></script>
 
-<form
-  action="{{ routes.search_url }}"
-  method="get"
-  role="search"
-  class="search-page-input__parent"
+<search-page-input-component
+  class="search-page-search"
+  data-search-url="{{ routes.search_url }}"
+  style="
+    {% render 'size-style', settings: block.settings %}
+    {% render 'spacing-style', settings: block.settings %}
+    {% if block.settings.input_style == 'custom' %}
+      {% render 'input-custom-styles', block_settings: block.settings %}
+      --style-border-width-inputs: {{ block.settings.border_width }}px;
+      --style-border-radius-inputs: {{ block.settings.border_radius }}px;
+    {% endif %}
+    --size-style-width: 100%;
+  "
+  {{ block.shopify_attributes }}
 >
-  <search-page-input-component
-    style="
-      {% render 'size-style', settings: block.settings %}
-      {% render 'spacing-style', settings: block.settings %}
-      {% if block.settings.input_style == 'custom' %}
-        {% render 'input-custom-styles', block_settings: block.settings %}
-        --style-border-width-inputs: {{ block.settings.border_width }}px;
-        --style-border-radius-inputs: {{ block.settings.border_radius }}px;
-      {% endif %}
-    "
-    {{ block.shopify_attributes }}
+  <form
+    action="{{ routes.search_url }}"
+    method="get"
+    role="search"
+    class="search-page-input__parent"
   >
-    <label
-      for="SearchPageInput--{{ block.id }}"
-      class="visually-hidden"
-    >
-      {{ 'content.search_input_label' | t }}
-    </label>
-    <span class="svg-wrapper search__icon">
-      {{ 'icon-search.svg' | inline_asset_content }}
-    </span>
-    <input
-      name="type"
-      value="product"
-      type="hidden"
-    >
-    <input
-      class="search-page-input"
-      id="SearchPageInput--{{ block.id }}"
-      type="search"
-      name="q"
-      ref="searchPageInput"
-      on:keydown="/handleKeyDown"
-      value="{{ search.terms | escape }}"
-      placeholder="{{ 'content.search_input_placeholder' | t }}"
-    >
-    <a
-      href="{{ routes.search_url }}?type=product&q="
-      class="search__reset-button"
-      aria-label="{{ 'accessibility.reset_search' | t }}"
-    >
-      <span class="svg-wrapper search__reset-button-icon">
-        {{ 'icon-reset.svg' | inline_asset_content }}
+    <div class="search-page-input-bar">
+      <label
+        for="SearchPageInput--{{ block.id }}"
+        class="visually-hidden"
+      >
+        {{ 'content.search_input_label' | t }}
+      </label>
+      <span class="svg-wrapper search__icon">
+        {{ 'icon-search.svg' | inline_asset_content }}
       </span>
-      <span class="search__reset-button-text">
-        {{ 'actions.clear' | t }}
-      </span>
-    </a>
-  </search-page-input-component>
-
-  {% if search.results.size == 0 and search.terms != blank %}
-    <div class="search-results__no-results">
-      <p>
-        {{ 'content.search_results_no_results_check_spelling' | t: terms: search.terms }}
-      </p>
+      <input
+        name="type"
+        value="product"
+        type="hidden"
+      >
+      <input
+        class="search-page-input"
+        id="SearchPageInput--{{ block.id }}"
+        type="search"
+        name="q"
+        ref="searchPageInput"
+        on:keydown="/handleKeyDown"
+        value="{{ search.terms | escape }}"
+        placeholder="{{ 'lds.search.placeholder' | t }}"
+      >
+      <a
+        href="{{ routes.search_url }}?type=product&q="
+        class="search__reset-button"
+        aria-label="{{ 'accessibility.reset_search' | t }}"
+      >
+        <span class="svg-wrapper search__reset-button-icon">
+          {{ 'icon-reset.svg' | inline_asset_content }}
+        </span>
+        <span class="search__reset-button-text">
+          {{ 'actions.clear' | t }}
+        </span>
+      </a>
+      <button
+        type="submit"
+        class="search-page-input__submit"
+      >
+        {{ 'lds.search.submit' | t }}
+      </button>
     </div>
-  {% endif %}
-</form>
+  </form>
+
+  <div
+    class="search-page-recent"
+    hidden
+    ref="recentRoot"
+  >
+    <div class="search-page-recent__top">
+      <p class="search-page-recent__label">{{ 'lds.search.recent' | t }}</p>
+      <button
+        type="button"
+        class="search-page-recent__clear"
+        ref="clearRecent"
+        on:click="/clearRecent"
+      >
+        {{ 'lds.search.clear_recent' | t }}
+      </button>
+    </div>
+    <ul
+      class="search-page-recent__list list-unstyled"
+      ref="recentList"
+    ></ul>
+  </div>
+</search-page-input-component>
+
+{% if search.results.size == 0 and search.terms != blank %}
+  <div class="search-results__no-results">
+    <p>
+      {{ 'content.search_results_no_results_check_spelling' | t: terms: search.terms }}
+    </p>
+  </div>
+{% endif %}
 
 {% stylesheet %}
   .search-page-input {
+    flex: 1;
+    min-width: 0;
     width: 100%;
     color: var(--color-input-text);
-    background-color: var(--color-input-background);
-    padding-block: var(--padding-lg);
-    padding-inline: calc(var(--icon-size-lg) + var(--margin-xl) * 1.5);
+    background-color: transparent;
+    padding-block: 0.95rem;
+    padding-inline: calc(var(--icon-size-lg) + var(--margin-xl) * 1.25) var(--padding-md);
     text-overflow: ellipsis;
     overflow: hidden;
-    border-radius: var(--style-border-radius-inputs);
-    border: var(--style-border-width-inputs) solid var(--color-input-border);
+    border: 0;
+    border-radius: 0;
+    outline: none;
+    appearance: none;
+
+    &::-webkit-search-cancel-button {
+      appearance: none;
+    }
 
     @media screen and (max-width: 749px) {
-      padding-inline: calc(var(--margin-xs) + var(--icon-size-lg) + var(--padding-md));
+      padding-inline: calc(var(--margin-xs) + var(--icon-size-lg) + var(--padding-md)) var(--padding-sm);
     }
   }
 
@@ -95,80 +136,99 @@
   .search-page-input__parent {
     display: flex;
     flex-direction: column;
-    align-items: var(--horizontal-alignment);
+    align-items: stretch;
+    width: 100%;
   }
 
   .search-results__no-results {
+    margin-block-start: var(--margin-md);
+    padding: var(--padding-md) 0;
     opacity: var(--opacity-subdued-text);
   }
 
-  search-page-input-component {
+  search-page-input-component.search-page-search {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    max-width: 100%;
+    background: none;
+    border: 0;
+    overflow: visible;
+    margin: 0;
+  }
+
+  .search-page-input-bar {
     position: relative;
     width: 100%;
     display: flex;
-    top: 0;
-    max-width: var(--size-style-width);
-    align-items: center;
-    background-color: var(--color-background);
-    margin: var(--margin-2xl) 0 var(--margin-md);
-
-    @media screen and (max-width: 749px) {
-      max-width: 100%;
-    }
+    align-items: stretch;
+    background-color: var(--color-input-background);
+    border: var(--style-border-width-inputs) solid var(--color-input-border);
+    border-radius: var(--style-border-radius-inputs);
+    overflow: hidden;
   }
 
-  search-page-input-component .search__icon,
-  search-page-input-component .search__icon:hover,
-  search-page-input-component .search__reset-button,
-  search-page-input-component .search__reset-button:hover {
+  .search-page-input-bar:focus-within {
+    box-shadow: 0 0 0 1px var(--color-foreground);
+  }
+
+  .search-page-input-bar .search__icon,
+  .search-page-input-bar .search__icon:hover,
+  .search-page-input-bar .search__reset-button,
+  .search-page-input-bar .search__reset-button:hover {
     background: transparent;
     position: absolute;
-    top: auto;
+    top: 50%;
+    transform: translateY(-50%);
     width: var(--icon-size-lg);
     height: var(--icon-size-lg);
   }
 
-  search-page-input-component .search__icon svg,
-  search-page-input-component .search__reset-button svg {
+  .search-page-input-bar .search__icon svg,
+  .search-page-input-bar .search__reset-button svg {
     width: var(--icon-size-md);
     height: var(--icon-size-md);
   }
 
-  search-page-input-component .search__icon svg {
+  .search-page-input-bar .search__icon svg {
     color: var(--color-input-text);
   }
 
-  search-page-input-component .search__icon {
+  .search-page-input-bar .search__icon {
     left: var(--margin-lg);
+    pointer-events: none;
 
     @media screen and (max-width: 749px) {
       left: var(--margin-md);
     }
   }
 
-  search-page-input-component .search__reset-button {
+  .search-page-input-bar .search__reset-button {
+    position: relative;
+    top: auto;
+    right: auto;
+    transform: none;
+    flex-shrink: 0;
+    align-self: center;
     border-radius: 100%;
     color: var(--color-input-text);
-    right: var(--margin-lg);
     cursor: pointer;
+    margin-inline-end: var(--padding-xs);
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
     transition: opacity var(--animation-speed) var(--animation-easing),
       visibility var(--animation-speed) var(--animation-easing);
-
-    @media screen and (max-width: 749px) {
-      right: var(--margin-md);
-    }
   }
 
-  search-page-input-component:has(.search-page-input:not(:placeholder-shown)) .search__reset-button {
+  .search-page-input-bar:has(.search-page-input:not(:placeholder-shown)) .search__reset-button {
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
   }
 
-  search-page-input-component .search__reset-button-icon {
+  .search-page-input-bar .search__reset-button-icon {
     vertical-align: middle;
     display: flex;
     align-items: center;
@@ -178,16 +238,16 @@
     transition: transform var(--animation-speed) var(--animation-easing);
   }
 
-  search-page-input-component .search__reset-button:active .search__reset-button-icon {
+  .search-page-input-bar .search__reset-button:active .search__reset-button-icon {
     transform: scale(0.9);
   }
 
-  search-page-input-component .search__reset-button-icon svg {
+  .search-page-input-bar .search__reset-button-icon svg {
     width: var(--icon-size-md);
     height: var(--icon-size-md);
   }
 
-  search-page-input-component .search__reset-button--hidden {
+  .search-page-input-bar .search__reset-button--hidden {
     cursor: default;
     opacity: 0;
     transition: opacity var(--animation-speed) var(--animation-easing);
@@ -195,8 +255,106 @@
     visibility: hidden;
   }
 
-  search-page-input-component .search__reset-button-text {
+  .search-page-input-bar .search__reset-button-text {
     display: none;
+  }
+
+  .search-page-input__submit {
+    flex-shrink: 0;
+    border: 0;
+    border-inline-start: var(--style-border-width-inputs) solid var(--color-input-border);
+    background: var(--color-foreground);
+    color: var(--color-background);
+    padding-inline: var(--padding-xl);
+    font-family: inherit;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .search-page-input__submit:hover {
+    opacity: 0.88;
+  }
+
+  @media screen and (max-width: 749px) {
+    .search-page-input__submit {
+      padding-inline: var(--padding-md);
+      font-size: 0.75rem;
+    }
+  }
+
+  .search-page-recent {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-xs);
+    width: 100%;
+    margin-block-start: var(--margin-md);
+  }
+
+  .search-page-recent[hidden] {
+    display: none;
+  }
+
+  .search-page-recent__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--gap-md);
+  }
+
+  .search-page-recent__label {
+    margin: 0;
+    font-size: 0.8125rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
+  }
+
+  .search-page-recent__clear {
+    border: 0;
+    background: none;
+    padding: 0;
+    font: inherit;
+    font-size: 0.8125rem;
+    color: rgb(var(--color-foreground-rgb) / var(--opacity-subdued-text));
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+  }
+
+  .search-page-recent__clear:hover {
+    color: var(--color-foreground);
+  }
+
+  .search-page-recent__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--gap-xs);
+    margin: 0;
+    padding: 0;
+  }
+
+  .search-page-recent__chip {
+    display: inline-flex;
+    align-items: center;
+    max-width: 100%;
+    padding: 0.4rem 0.85rem;
+    border: var(--style-border-width-inputs) solid var(--color-border, var(--color-input-border));
+    border-radius: 999px;
+    color: var(--color-foreground);
+    text-decoration: none;
+    font-size: 0.875rem;
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .search-page-recent__chip:hover {
+    background-color: rgb(var(--color-foreground-rgb) / var(--opacity-8));
   }
 {% endstylesheet %}
 

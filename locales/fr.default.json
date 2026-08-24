@@ -350,5 +350,53 @@
       "success_moderated": "Commentaire publié, en attente de modération",
       "success": "Commentaire publié"
     }
+  },
+  "lds": {
+    "footer": {
+      "quick_links": "Liens rapides",
+      "information": "Informations",
+      "home": "Accueil",
+      "catalog": "Catalogue",
+      "wholesale": "Vente en gros",
+      "used_products": "Produits d'occasion",
+      "contact": "Contact",
+      "sitemap": "Plan du site",
+      "newsletter": "Newsletter",
+      "newsletter_text": "Recevez nos offres exclusives et un accès anticipé aux nouveautés.",
+      "brand_text": "Fournitures d’entretien et de sécurité pour propriétaires et agences. Des produits de qualité, un achat simple."
+    },
+    "wholesale": {
+      "title": "Vente en gros",
+      "intro": "Commandes professionnelles et en gros pour propriétaires et agences."
+    },
+    "used_products": {
+      "title": "Produits d'occasion",
+      "intro": "Produits retournés et contrôlés, testés et prêts à l’emploi."
+    },
+    "catalogue": {
+      "title": "Catalogue"
+    },
+    "sitemap": {
+      "title": "Plan du site",
+      "pages": "Pages",
+      "collections": "Collections",
+      "policies": "Politiques"
+    },
+    "products": "Produits",
+    "header": {
+      "choose_language": "Choisir la langue",
+      "french": "Français",
+      "english": "Anglais"
+    },
+    "search": {
+      "placeholder": "Rechercher des produits",
+      "submit": "Rechercher",
+      "results_count": {
+        "one": "{{ count }} résultat pour « {{ terms }} »",
+        "other": "{{ count }} résultats pour « {{ terms }} »"
+      },
+      "recent": "Recherches récentes",
+      "clear_recent": "Effacer"
+    }
   }
 }

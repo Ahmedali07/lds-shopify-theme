@@ -37,37 +37,16 @@
             "padding-inline-end": 0
           },
           "blocks": {}
-        },
-        "button_H9gpTf": {
-          "type": "button",
-          "name": "t:names.button",
-          "settings": {
-            "label": "Shop catalogue",
-            "link": "shopify://collections/all",
-            "open_in_new_tab": false,
-            "style_class": "button-custom",
-            "custom_button_background": "rgba(0,0,0,0)",
-            "custom_button_text": "{{ settings.color_palette.foreground }}",
-            "custom_button_border": "{{ settings.color_palette.background }}",
-            "link_text_color": "",
-            "width": "fit-content",
-            "custom_width": 100,
-            "width_mobile": "fit-content",
-            "custom_width_mobile": 100
-          },
-          "blocks": {}
         }
       },
       "block_order": [
-        "text_YLPk4p",
-        "button_H9gpTf"
+        "text_YLPk4p"
       ],
       "name": "t:names.hero",
       "settings": {
         "media_type_1": "image",
         "image_1": "shopify://shop_images/ChatGPT_Image_Aug_25_2026_02_30_42_PM_8ed7f401-259f-4af1-ae88-7b80cf0f54f5.png",
         "media_type_2": "image",
-        "image_2": "shopify://shop_images/ChatGPT_Image_Aug_25_2026_02_30_42_PM_8ed7f401-259f-4af1-ae88-7b80cf0f54f5.png",
         "stack_media_on_mobile": false,
         "custom_mobile_media": true,
         "media_type_1_mobile": "image",

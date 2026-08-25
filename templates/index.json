@@ -65,9 +65,8 @@
       "name": "t:names.hero",
       "settings": {
         "media_type_1": "image",
-        "image_1": "shopify://shop_images/ChatGPT_Image_Aug_25_2026_02_25_03_PM.png",
+        "image_1": "shopify://shop_images/ChatGPT_Image_Aug_25_2026_02_30_42_PM_8ed7f401-259f-4af1-ae88-7b80cf0f54f5.png",
         "media_type_2": "image",
-        "image_2": "shopify://shop_images/LDS_Banner.png",
         "stack_media_on_mobile": false,
         "custom_mobile_media": true,
         "media_type_1_mobile": "image",

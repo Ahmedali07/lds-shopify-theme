@@ -83,7 +83,7 @@
         "vertical_alignment_flex_direction_column": "flex-end",
         "gap": 46,
         "section_width": "full-width",
-        "section_height": "custom",
+        "section_height": "full-screen",
         "section_height_custom": 62,
         "media_fit": "contain",
         "background_color": "{{ settings.color_palette.color2 }}",

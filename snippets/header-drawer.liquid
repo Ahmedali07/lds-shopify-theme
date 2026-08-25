@@ -613,14 +613,12 @@
         style="--menu-drawer-animation-index: {{ linklist.links.size }};"
       >
         {% liquid
-          assign show_language = section.settings.show_language
-
           assign show_country = section.settings.show_country
           if localization.available_countries.size <= 1
             assign show_country = false
           endif
         %}
-        {% if data_header_drawer_type == 'mobile-drawer' and show_country or show_language %}
+        {% if data_header_drawer_type == 'mobile-drawer' and show_country %}
           {% liquid
             assign background_brightness = block_settings.background_color | color_brightness
             if background_brightness < 64
@@ -633,13 +631,6 @@
             assign color_shadow = '--color-shadow: rgb(var(--color-foreground-rgb) / var(--opacity-10-25));'
             assign form_style = localization_font | append: color_shadow
           %}
-          {% if show_language %}
-            {% render 'header-language-switcher',
-              form_id: 'HeaderDrawer',
-              form_style: form_style,
-              variant: 'drawer'
-            %}
-          {% endif %}
           {% if show_country %}
             <drawer-localization-component class="menu-drawer__localization">
               <details

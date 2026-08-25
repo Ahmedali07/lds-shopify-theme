@@ -1,10 +1,10 @@
 
 
 {% liquid
-  assign order = 'logo,menu,localization,search,drawer_search,actions'
+  assign order = 'localization,logo,menu,search,drawer_search,actions'
 
   if shop.customer_accounts_enabled
-    assign order = 'drawer_search,logo,menu,localization,search,actions'
+    assign order = 'drawer_search,localization,logo,menu,search,actions'
   endif
 
   assign rows = 'top,bottom' | split: ','
@@ -96,7 +96,7 @@
     content_for 'block', type: '_header-menu', id: 'header-menu', variant: 'navigation_bar', transparent: transparent
   endcapture
 
-  assign show_language = section.settings.show_language
+  assign show_language = false
   assign show_country = section.settings.show_country
   if localization.available_countries.size <= 1
     assign show_country = false
@@ -110,18 +110,9 @@
     assign color_shadow = '--color-shadow: rgb(var(--color-foreground-rgb) / var(--opacity-10-25));'
     assign form_style = localization_font | append: localization_font_size | append: color_shadow
   %}
-  {% if show_language or show_country %}
+  {% if show_country %}
     <div class="header-localization-group dropdown-localization mobile:hidden">
-      {% if show_language %}
-        {% render 'header-language-switcher',
-          form_id: section.id,
-          form_style: form_style,
-          localization_position: section.settings.localization_position
-        %}
-      {% endif %}
-
-      {% if show_country %}
-        <dropdown-localization-component class="dropdown-localization">
+      <dropdown-localization-component class="dropdown-localization">
           <button
             type="button"
             class="button dropdown-localization__button localization-selector header-actions__action"
@@ -182,14 +173,13 @@
             %}
           </div>
         </dropdown-localization-component>
-      {% endif %}
     </div>
   {% endif %}
 {% endcapture %}
 
 {% liquid
   capture actions
-    render 'header-actions', customer_account_menu: section.settings.customer_account_menu, display_style: section.settings.actions_display_style, section: section, localization: localization_markup
+    render 'header-actions', customer_account_menu: section.settings.customer_account_menu, display_style: section.settings.actions_display_style, section: section
   endcapture
 
   if shop.customer_accounts_enabled
@@ -200,15 +190,15 @@
   if section.settings.localization_position == 'left'
     if section.settings.search_position == 'left'
       if shop.customer_accounts_enabled
-        assign order = 'drawer_search,logo,search,localization,menu,actions'
+        assign order = 'drawer_search,search,localization,logo,menu,actions'
       else
-        assign order = 'logo,search,localization,menu,drawer_search,actions'
+        assign order = 'localization,logo,search,menu,drawer_search,actions'
       endif
     else
       if shop.customer_accounts_enabled
-        assign order = 'drawer_search,logo,localization,menu,search,actions'
+        assign order = 'drawer_search,localization,logo,menu,search,actions'
       else
-        assign order = 'logo,localization,menu,search,drawer_search,actions'
+        assign order = 'localization,logo,menu,search,drawer_search,actions'
       endif
     endif
   else
@@ -416,7 +406,7 @@
         logo: logo,
         menu: menu,
         actions: actions,
-        localization: '',
+        localization: localization_markup,
         search: search,
         drawer_search: drawer_search
       %}
@@ -487,6 +477,7 @@
   }
 
   .header-localization-group {
+    display: flex;
     align-items: center;
     gap: 4px;
   }

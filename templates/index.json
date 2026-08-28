@@ -937,7 +937,8 @@
               "name": "t:names.icon",
               "settings": {
                 "icon": "box",
-                "width": 32,
+                "image_upload": "shopify://shop_images/exactly-like-this-icon.png",
+                "width": 40,
                 "link": "",
                 "open_in_new_tab": false,
                 "icon_color": ""
@@ -1048,6 +1049,7 @@
               "name": "t:names.icon",
               "settings": {
                 "icon": "star",
+                "image_upload": "shopify://shop_images/business-icon.png",
                 "width": 32,
                 "link": "",
                 "open_in_new_tab": false,

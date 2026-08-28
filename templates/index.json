@@ -98,7 +98,7 @@
             "custom_width_mobile": 100,
             "height": "fit",
             "custom_height": 100,
-            "background_media": "none",
+            "background_media": "image",
             "background_color": "",
             "video_position": "cover",
             "background_image_position": "cover",
@@ -120,6 +120,25 @@
             "padding-inline-end": 0
           },
           "blocks": {
+            "button_cBVryz": {
+              "type": "button",
+              "name": "t:names.button",
+              "settings": {
+                "label": "Découvrir",
+                "link": "shopify://collections/all",
+                "open_in_new_tab": false,
+                "style_class": "button-secondary",
+                "custom_button_background": "{{ settings.color_palette.foreground }}",
+                "custom_button_text": "{{ settings.color_palette.background }}",
+                "custom_button_border": "{{ settings.color_palette.background }}",
+                "link_text_color": "",
+                "width": "fit-content",
+                "custom_width": 100,
+                "width_mobile": "fit-content",
+                "custom_width_mobile": 100
+              },
+              "blocks": {}
+            },
             "text_UyUYKR": {
               "type": "text",
               "name": "t:names.heading",
@@ -150,7 +169,7 @@
               "type": "text",
               "name": "t:names.description",
               "settings": {
-                "text": "<p>We create with intention. Our products solve real problems with clean design and honest materials.</p>",
+                "text": "<p>Des solutions sécurisées pour protéger vos clés et vos biens.</p>",
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "center",
@@ -174,6 +193,7 @@
             }
           },
           "block_order": [
+            "button_cBVryz",
             "text_UyUYKR",
             "text_QEdXM7"
           ]
@@ -196,7 +216,7 @@
             "custom_width_mobile": 100,
             "height": "fit",
             "custom_height": 100,
-            "background_media": "none",
+            "background_media": "image",
             "background_color": "",
             "video_position": "cover",
             "background_image_position": "cover",
@@ -218,6 +238,25 @@
             "padding-inline-end": 0
           },
           "blocks": {
+            "button_Fgn4kc": {
+              "type": "button",
+              "name": "t:names.button",
+              "settings": {
+                "label": "Découvrir",
+                "link": "shopify://collections/all",
+                "open_in_new_tab": false,
+                "style_class": "button",
+                "custom_button_background": "{{ settings.color_palette.foreground }}",
+                "custom_button_text": "{{ settings.color_palette.background }}",
+                "custom_button_border": "{{ settings.color_palette.background }}",
+                "link_text_color": "",
+                "width": "fit-content",
+                "custom_width": 100,
+                "width_mobile": "fit-content",
+                "custom_width_mobile": 100
+              },
+              "blocks": {}
+            },
             "text_qimfqr": {
               "type": "text",
               "name": "t:names.heading",
@@ -248,7 +287,7 @@
               "type": "text",
               "name": "t:names.description",
               "settings": {
-                "text": "<p>We obsess over the details and strive to deliver the best products at the best prices, every time.</p>",
+                "text": "<p>Des solutions professionnelles pour vos bureaux et vos employés</p>",
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "center",
@@ -272,6 +311,7 @@
             }
           },
           "block_order": [
+            "button_Fgn4kc",
             "text_qimfqr",
             "text_Vpbqxc"
           ]
@@ -294,7 +334,7 @@
             "custom_width_mobile": 100,
             "height": "fit",
             "custom_height": 100,
-            "background_media": "none",
+            "background_media": "image",
             "background_color": "",
             "video_position": "cover",
             "background_image_position": "cover",
@@ -316,6 +356,25 @@
             "padding-inline-end": 0
           },
           "blocks": {
+            "button_raPxTq": {
+              "type": "button",
+              "name": "t:names.button",
+              "settings": {
+                "label": "Découvrir",
+                "link": "shopify://collections/all",
+                "open_in_new_tab": false,
+                "style_class": "button",
+                "custom_button_background": "{{ settings.color_palette.foreground }}",
+                "custom_button_text": "{{ settings.color_palette.background }}",
+                "custom_button_border": "{{ settings.color_palette.background }}",
+                "link_text_color": "",
+                "width": "fit-content",
+                "custom_width": 100,
+                "width_mobile": "fit-content",
+                "custom_width_mobile": 100
+              },
+              "blocks": {}
+            },
             "text_w9iKjB": {
               "type": "text",
               "name": "t:names.heading",
@@ -346,7 +405,7 @@
               "type": "text",
               "name": "t:names.description",
               "settings": {
-                "text": "<p>We're always on your side: keeping our loyal customers happy is our top priority and number one goal.</p>",
+                "text": "<p>Idéal pour Airbnb, locations saisonnières et conciergeries</p>",
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "center",
@@ -370,6 +429,7 @@
             }
           },
           "block_order": [
+            "button_raPxTq",
             "text_w9iKjB",
             "text_eLPad6"
           ]
@@ -390,7 +450,7 @@
         "horizontal_alignment_flex_direction_column": "flex-start",
         "vertical_alignment_flex_direction_column": "center",
         "gap": 16,
-        "section_width": "page-width",
+        "section_width": "full-width",
         "section_height": "",
         "section_height_custom": 50,
         "background_media": "none",

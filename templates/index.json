@@ -1151,15 +1151,115 @@
         "padding-block-end": 48
       }
     },
-    "custom_liquid_mc9tid": {
-      "type": "custom-liquid",
-      "name": "t:names.custom_liquid",
+    "hero_WNmcBJ": {
+      "type": "hero",
+      "blocks": {
+        "text_dnede4": {
+          "type": "text",
+          "settings": {
+            "text": "<h2>👥 VOUS ACHETEZ EN QUANTITÉ ?</h2>",
+            "width": "fit-content",
+            "max_width": "narrow",
+            "alignment": "left",
+            "type_preset": "h1",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "text_color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "text_nA68wd": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Découvrez nos offres professionnelles et tarifs de gros</p>",
+            "width": "fit-content",
+            "max_width": "narrow",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "text_color": "",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 32,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
+        "button_Ln9PgA": {
+          "type": "button",
+          "name": "t:names.button",
+          "settings": {
+            "label": "VOIR NOS OFFRES WHOLESALE",
+            "link": "shopify://pages/wholesale-products",
+            "open_in_new_tab": false,
+            "style_class": "button",
+            "custom_button_background": "{{ settings.color_palette.foreground }}",
+            "custom_button_text": "{{ settings.color_palette.background }}",
+            "custom_button_border": "{{ settings.color_palette.background }}",
+            "link_text_color": "",
+            "width": "fit-content",
+            "custom_width": 100,
+            "width_mobile": "fit-content",
+            "custom_width_mobile": 100
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "text_dnede4",
+        "text_nA68wd",
+        "button_Ln9PgA"
+      ],
+      "name": "t:names.hero",
       "settings": {
-        "custom_liquid": "<style>\n  .lds-wholesale-banner {\n    width: 100%;\n    max-width: 1200px;\n    margin: 0 auto;\n    background: #087fb5;\n    border-radius: 8px;\n    overflow: hidden;\n    color: #ffffff;\n  }\n\n  .lds-wholesale-inner {\n    display: grid;\n    grid-template-columns: 1.45fr 0.9fr;\n    min-height: 190px;\n  }\n\n  .lds-wholesale-content {\n    display: flex;\n    align-items: center;\n    gap: 22px;\n    padding: 30px 36px;\n  }\n\n  .lds-wholesale-icon {\n    width: 58px;\n    min-width: 58px;\n    height: 58px;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n  }\n\n  .lds-wholesale-icon svg {\n    width: 55px;\n    height: 55px;\n    stroke: #ffffff;\n    fill: none;\n    stroke-width: 1.8;\n    stroke-linecap: round;\n    stroke-linejoin: round;\n  }\n\n  .lds-wholesale-text h2 {\n    margin: 0 0 7px;\n    font-size: 25px;\n    line-height: 1.2;\n    font-weight: 700;\n    letter-spacing: 0.2px;\n    color: #ffffff;\n  }\n\n  .lds-wholesale-text p {\n    margin: 0 0 17px;\n    font-size: 14px;\n    line-height: 1.45;\n    color: #ffffff;\n  }\n\n  .lds-wholesale-buttons {\n    display: flex;\n    flex-wrap: wrap;\n    gap: 10px;\n  }\n\n  .lds-wholesale-button {\n    display: inline-flex;\n    align-items: center;\n    justify-content: center;\n    min-height: 34px;\n    padding: 8px 15px;\n    border-radius: 4px;\n    text-decoration: none;\n    font-size: 12px;\n    font-weight: 600;\n    transition: all 0.2s ease;\n  }\n\n  .lds-wholesale-button.primary {\n    background: #ffffff;\n    color: #087fb5;\n  }\n\n  .lds-wholesale-button.secondary {\n    background: transparent;\n    color: #ffffff;\n    border: 1px solid #ffffff;\n  }\n\n  .lds-wholesale-button:hover {\n    opacity: 0.88;\n    transform: translateY(-1px);\n  }\n\n  .lds-wholesale-image {\n    min-height: 190px;\n    background-image: url(\"IMAGE_URL_ICI\");\n    background-size: cover;\n    background-position: center;\n  }\n\n  @media screen and (max-width: 749px) {\n    .lds-wholesale-inner {\n      grid-template-columns: 1fr;\n    }\n\n    .lds-wholesale-content {\n      padding: 25px 22px;\n      gap: 15px;\n    }\n\n    .lds-wholesale-icon {\n      width: 45px;\n      min-width: 45px;\n      height: 45px;\n    }\n\n    .lds-wholesale-icon svg {\n      width: 43px;\n      height: 43px;\n    }\n\n    .lds-wholesale-text h2 {\n      font-size: 20px;\n    }\n\n    .lds-wholesale-text p {\n      font-size: 13px;\n    }\n\n    .lds-wholesale-image {\n      min-height: 150px;\n    }\n\n    .lds-wholesale-button {\n      font-size: 11px;\n      padding: 8px 12px;\n    }\n  }\n</style>\n\n<div class=\"lds-wholesale-banner\">\n  <div class=\"lds-wholesale-inner\">\n\n    <div class=\"lds-wholesale-content\">\n\n      <div class=\"lds-wholesale-icon\">\n        <svg viewBox=\"0 0 64 64\" aria-hidden=\"true\">\n          <circle cx=\"32\" cy=\"17\" r=\"7\"></circle>\n          <circle cx=\"14\" cy=\"25\" r=\"6\"></circle>\n          <circle cx=\"50\" cy=\"25\" r=\"6\"></circle>\n\n          <path d=\"M20 48c0-9 5-15 12-15s12 6 12 15\"></path>\n          <path d=\"M4 47c0-7 4-12 10-12 5 0 9 4 10 9\"></path>\n          <path d=\"M40 44c1-5 5-9 10-9 6 0 10 5 10 12\"></path>\n        </svg>\n      </div>\n\n      <div class=\"lds-wholesale-text\">\n\n        <h2>VOUS ACHETEZ EN QUANTITÉ ?</h2>\n\n        <p>\n          Découvrez nos offres professionnelles et nos tarifs de gros.\n        </p>\n\n        <div class=\"lds-wholesale-buttons\">\n\n          <a href=\"/pages/vente-en-gros\" class=\"lds-wholesale-button primary\">\n            À PARTIR DE 50 PIÈCES\n          </a>\n\n          <a href=\"/pages/vente-en-gros\" class=\"lds-wholesale-button secondary\">\n            VOIR NOS OFFRES WHOLESALE\n          </a>\n\n        </div>\n\n      </div>\n\n    </div>\n\n    <div class=\"lds-wholesale-image\"></div>\n\n  </div>\n</div>",
+        "media_type_1": "image",
+        "media_type_2": "image",
+        "stack_media_on_mobile": false,
+        "custom_mobile_media": false,
+        "media_type_1_mobile": "image",
+        "media_type_2_mobile": "image",
+        "link": "",
+        "open_in_new_tab": false,
+        "content_direction": "row",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "center",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "center",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 16,
+        "section_width": "full-width",
+        "section_height": "auto",
+        "section_height_custom": 50,
+        "media_fit": "cover",
         "background_color": "",
-        "section_width": "page-width",
-        "padding-block-start": 0,
-        "padding-block-end": 0
+        "toggle_overlay": true,
+        "overlay_color": "#00000026",
+        "overlay_style": "gradient",
+        "gradient_direction": "to top",
+        "blurred_reflection": false,
+        "reflection_opacity": 75,
+        "padding-block-start": 20,
+        "padding-block-end": 20
       }
     }
   },
@@ -1169,6 +1269,6 @@
     "product_list_xjcHw8",
     "section_dRWgyf",
     "section_zHyeY6",
-    "custom_liquid_mc9tid"
+    "hero_WNmcBJ"
   ]
 }

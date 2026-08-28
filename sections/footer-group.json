@@ -261,7 +261,7 @@
               "settings": {
                 "width": "fill",
                 "custom_width": 100,
-                "heading": "",
+                "heading": "Votre adresse e-mail",
                 "heading_text_color": "",
                 "heading_preset": "h3",
                 "border_style": "all",
@@ -278,7 +278,7 @@
                 "custom_button_border": "#ffffff",
                 "link_text_color": "",
                 "display_type": "text",
-                "label": "Subscribe",
+                "label": "S’inscrire",
                 "integrated_button": true,
                 "button_type_preset": "paragraph",
                 "padding-block-start": 0,

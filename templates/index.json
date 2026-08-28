@@ -1150,6 +1150,17 @@
         "padding-block-start": 48,
         "padding-block-end": 48
       }
+    },
+    "custom_liquid_mc9tid": {
+      "type": "custom-liquid",
+      "name": "t:names.custom_liquid",
+      "settings": {
+        "custom_liquid": "",
+        "background_color": "",
+        "section_width": "page-width",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
     }
   },
   "order": [
@@ -1157,6 +1168,7 @@
     "section_Adc3gr",
     "product_list_xjcHw8",
     "section_dRWgyf",
-    "section_zHyeY6"
+    "section_zHyeY6",
+    "custom_liquid_mc9tid"
   ]
 }
